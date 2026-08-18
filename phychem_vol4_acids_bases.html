@@ -178,6 +178,29 @@ main:not(#main-stage):not(.main-stage){padding-top:8px!important}
 @media(max-width:700px){#question-panel,.question-panel{margin-top:-4px!important;padding-top:6px!important}main:not(#main-stage):not(.main-stage){padding-top:6px!important}}
 </style>
 <!-- END:QUESTION_POSITION_V3 -->
+<!-- BEGIN:QUESTION_CONTRAST_FIX_V4 -->
+<style>
+#question-panel .question-formula-box,#question-panel [class*="formula-box"],#question-panel .question-box,#question-panel [class*="question-box"]{background:#ffffff!important;background-image:none!important;color:#111827!important;border:2px solid #cbd5e1!important;box-shadow:none!important;opacity:1!important}
+#question-panel .question-formula-box *,#question-panel [class*="formula-box"] *,#question-panel .question-box *,#question-panel [class*="question-box"] *,#formula-text,.formula-text,#question-text,.question-text{color:#111827!important;-webkit-text-fill-color:#111827!important;text-shadow:none!important;opacity:1!important;filter:none!important}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{const applyReadableQuestion=()=>{const panel=document.getElementById('question-panel');if(!panel)return;panel.querySelectorAll('.question-formula-box,[class*="formula-box"],.question-box,[class*="question-box"]').forEach(el=>{el.style.setProperty('background','#ffffff','important');el.style.setProperty('background-image','none','important');el.style.setProperty('color','#111827','important')});panel.querySelectorAll('#formula-text,.formula-text,#question-text,.question-text').forEach(el=>{el.style.setProperty('color','#111827','important');el.style.setProperty('-webkit-text-fill-color','#111827','important');el.style.setProperty('text-shadow','none','important')})};applyReadableQuestion();new MutationObserver(applyReadableQuestion).observe(document.body,{subtree:true,childList:true,characterData:true})});
+</script>
+<!-- END:QUESTION_CONTRAST_FIX_V4 -->
+<!-- BEGIN:SCIENCE_FORMULA_RENDER_V1 -->
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{let t;const draw=()=>{clearTimeout(t);t=setTimeout(()=>{if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetClear();MathJax.typesetPromise().catch(()=>{})}},60)};new MutationObserver(draw).observe(document.body,{subtree:true,childList:true,characterData:true});draw()});
+</script>
+<style>
+#question-panel [class*="formula-box"],#question-panel .question-box{background:#fff!important;border:2px solid #94a3b8!important;border-left:6px solid #2563eb!important;border-radius:12px!important;padding:18px 20px!important;overflow-x:auto!important}
+#formula-text,.formula-text,#question-text,.question-text{font-family:"Cambria Math","STIX Two Math","Times New Roman","Microsoft JhengHei",serif!important;font-size:clamp(19px,2.2vw,25px)!important;line-height:1.7!important;color:#111827!important;-webkit-text-fill-color:#111827!important;text-align:left!important}
+mjx-container{color:#111827!important;font-size:106%!important;max-width:100%!important}mjx-container[display="true"]{overflow-x:auto!important;overflow-y:hidden!important}
+</style>
+<!-- END:SCIENCE_FORMULA_RENDER_V1 -->
 </head>
 <body>
   <div id="app-container">
@@ -897,5 +920,10 @@ main:not(#main-stage):not(.main-stage){padding-top:8px!important}
 })();
 </script>
 <!-- END:SIMPLE_HINT_TEXT_FIX -->
+<!-- BEGIN:EXPERIMENT_QUESTIONS_V1 -->
+<script>
+CHAPTERS[CHAPTERS.length - 1].questions.push(...[{"formula":"【實驗探究】學生研究「加水稀釋對酸性溶液pH值的影響」。本實驗的操作變因為何？","options":["溶液pH值","原酸液種類、原體積與溫度","加水體積","每組實驗重複次數"],"correct":"加水體積","hint":"","misconceptions":{},"explanation":"操作變因是研究者主動改變的條件，本題為「加水體積」。"},{"formula":"【實驗探究】進行「加水稀釋對酸性溶液pH值的影響」時，最適合作為應變變因並加以測量的是哪一項？","options":["原酸液種類、原體積與溫度","實驗器材品牌","溶液pH值","加水體積"],"correct":"溶液pH值","hint":"","misconceptions":{},"explanation":"應變變因是隨操作條件改變而測量的結果，本題應記錄「溶液pH值」。"},{"formula":"【實驗設計】為公平比較「加水稀釋對酸性溶液pH值的影響」，下列哪一組條件最應保持相同？","options":["操作變因與應變變因都保持相同","只需保持紀錄表格式相同","原酸液種類、原體積與溫度","各組可使用不同測量方法"],"correct":"原酸液種類、原體積與溫度","hint":"","misconceptions":{},"explanation":"公平實驗除操作變因外，其他可能影響結果的條件都要控制一致，例如：原酸液種類、原體積與溫度。"},{"formula":"【數據推論】若實驗數據穩定支持原先假設，下列哪一項最合理？","options":["只要有一筆資料符合即可證明假設","酸液逐漸稀釋時pH值上升並接近7","刪除所有不符合預期的資料","未測量的條件也一定有相同結果"],"correct":"酸液逐漸稀釋時pH值上升並接近7","hint":"","misconceptions":{},"explanation":"結論只能依實際控制的條件與測得資料推論；本實驗合理趨勢為：酸液逐漸稀釋時pH值上升並接近7。"},{"formula":"【實驗品質】若各組測量結果略有差異，哪一種做法最能提高結果的可信度？","options":["只採用最接近預期的一次","改變多個條件再比較","增加重複次數並計算平均值","省略與預期不符的資料"],"correct":"增加重複次數並計算平均值","hint":"","misconceptions":{},"explanation":"重複測量並取平均可降低偶然誤差；不應任意刪除不符合預期的資料。"}]);
+</script>
+<!-- END:EXPERIMENT_QUESTIONS_V1 -->
 </body>
 </html>
