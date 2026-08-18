@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>國中生物會考：養分與消化 互動特訓 | BioQuest</title>
+  <meta name="description" content="專為國中生物會考打造的簡約清爽風養分與消化系統互動特訓題庫，具備即時迷思診斷與核心考點解析。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       國中生物會考：簡約教育現代風 (Clean Minimalist Educational Style)
+       ============================================================ */
+    :root {
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      
+      --text-main: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      
+      --primary: #0ea5e9;
+      --primary-hover: #0284c7;
+      --primary-light: #e0f2fe;
+      
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      
+      --border: #e2e8f0;
+      --border-focus: #cbd5e1;
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+      
+      --font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-en: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      line-height: 1.6;
+    }
+
+    /* Main Container */
+    #app-container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Header Nav */
+    header {
+      padding: 16px 24px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .header-stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stat-pill {
+      background: var(--bg-subtle);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stat-score {
+      color: var(--primary);
+      font-family: var(--font-en);
+    }
+
+    .btn-sound {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .btn-sound:hover {
+      background: var(--border);
+    }
+
+    /* Level Progress Stepper */
+    .progress-bar-container {
+      padding: 12px 24px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .level-indicator {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .stepper-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      transition: all 0.3s;
+    }
+
+    .step-dot.active {
+      background: var(--primary);
+      transform: scale(1.2);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .step-dot.cleared {
+      background: var(--success);
+    }
+
+    /* Main Area */
+    main {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Interactive Visual Board (Test Tubes / Organs) */
+    .visual-board {
+      background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .visual-board-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .visual-canvas-wrapper {
+      height: 70px;
+      width: 100%;
+    }
+
+    #bio-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Question Card */
+    .question-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .question-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .question-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .question-hint {
+      font-size: 14px;
+      color: var(--text-secondary);
+      background: var(--warning-light);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      border-left: 4px solid var(--warning);
+      margin-bottom: 16px;
+    }
+
+    /* Options Grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .options-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .option-btn {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.15s ease;
+      outline: none;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary);
+      background: #f0f9ff;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .option-btn:active {
+      transform: translateY(1px);
+    }
+
+    .opt-key {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--font-en);
+      flex-shrink: 0;
+    }
+
+    .option-btn.correct {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      color: #065f46 !important;
+    }
+
+    .option-btn.wrong {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #991b1b !important;
+      animation: shake 0.3s ease;
+    }
+
+    /* Diagnostic Modal */
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 50;
+    }
+
+    .modal-box {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      max-width: 540px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      animation: popIn 0.25s ease-out;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-icon {
+      font-size: 24px;
+    }
+
+    .modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .misconception-card {
+      background: var(--danger-light);
+      border-left: 4px solid var(--danger);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: #991b1b;
+      line-height: 1.6;
+    }
+
+    .explanation-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .btn-continue {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      align-self: flex-end;
+      transition: background 0.2s;
+    }
+
+    .btn-continue:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Screen Overlays (Start / Victory / GameOver) */
+    .screen-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      text-align: center;
+      z-index: 40;
+    }
+
+    .screen-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .screen-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .screen-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin-bottom: 24px;
+    }
+
+    .info-list-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      max-width: 480px;
+      width: 100%;
+      text-align: left;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .info-list-card ul {
+      padding-left: 20px;
+      margin-top: 6px;
+    }
+
+    .btn-primary-large {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 14px 36px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-primary-large:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(14, 165, 233, 0.45);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app-container">
+    
+    <!-- Top Header -->
+    <header>
+      <div class="brand">
+        <div class="brand-icon">🧬</div>
+        <div>
+          <div class="brand-title">國中生物會考特訓</div>
+        </div>
+        <span class="brand-badge">養分與消化</span>
+      </div>
+
+      <div class="header-stats">
+        <div class="stat-pill">
+          <span>得分</span>
+          <span id="score-val" class="stat-score">0</span>
+        </div>
+        <button id="btn-sound" class="btn-sound">🔊 音效: 開</button>
+      </div>
+    </header>
+
+    <!-- Progress Indicator -->
+    <div class="progress-bar-container">
+      <div id="level-title" class="level-indicator">Level 1: 養分檢驗與熱量</div>
+      <div id="stepper-dots" class="stepper-dots"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      
+      <!-- Interactive Visual Board -->
+      <section class="visual-board">
+        <div class="visual-board-header">
+          <span>🧪 實驗試劑反應與消化途徑圖解</span>
+          <span style="color:var(--primary); font-size:11px;">★ 會考核心概念輔助</span>
+        </div>
+        <div class="visual-canvas-wrapper">
+          <canvas id="bio-canvas"></canvas>
+        </div>
+      </section>
+
+      <!-- Question Box -->
+      <section class="question-card">
+        <span id="quest-tag" class="question-tag">題目 1/5</span>
+        <div id="question-text" class="question-title">載入中...</div>
+        <div id="question-hint" class="question-hint">💡 提示：正在載入會考考點...</div>
+        
+        <!-- Options Grid -->
+        <div id="options-grid" class="options-grid"></div>
+      </section>
+
+    </main>
+
+    <!-- Diagnostic Explanation Modal -->
+    <div id="modal-explanation" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <span class="modal-icon">💡</span>
+          <div class="modal-title">會考觀念解析與迷思診斷</div>
+        </div>
+        <div id="misconception-box" class="misconception-card"></div>
+        <div id="explanation-box" class="explanation-card"></div>
+        <button id="btn-modal-next" class="btn-continue">弄懂了，下一題 ➔</button>
+      </div>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="screen-start" class="screen-overlay">
+      <div class="screen-icon">🔬</div>
+      <h1 class="screen-title">國中生物會考：養分與消化</h1>
+      <p class="screen-subtitle">依照 108 課綱與歷屆會考高頻考點設計，包含四大主題單元與精準迷思診斷。</p>
+      
+      <div class="info-list-card">
+        <strong>📚 四大核心主題：</strong>
+        <ul>
+          <li><strong>Level 1</strong> 養分試驗所（碘液、本氏液隔水加熱、熱量 4-9-4）</li>
+          <li><strong>Level 2</strong> 酵素密室（蛋白質成分、專一性、高溫變性不可逆）</li>
+          <li><strong>Level 3</strong> 消化道長征（膽汁三大重點、胰液全能分解）</li>
+          <li><strong>Level 4</strong> 絨毛神殿（小腸絨毛表面積、吸收小分子、大腸功能）</li>
+        </ul>
+      </div>
+
+      <button id="btn-start" class="btn-primary-large">開始特訓 (START) ➔</button>
+    </div>
+
+    <!-- Victory Screen -->
+    <div id="screen-victory" class="screen-overlay" style="display:none;">
+      <div class="screen-icon">🏆</div>
+      <h1 class="screen-title" style="color:var(--success);">特訓完成！</h1>
+      <p class="screen-subtitle">恭喜你全數通過養分與消化單元所有會考題型！</p>
+      
+      <div class="info-list-card" style="text-align:center;">
+        <p style="font-size:16px; margin-bottom:8px;">獲得認證：<strong style="color:var(--warning);">【生物會考滿級分達人】</strong></p>
+        <p>最終得分：<strong id="final-score" style="color:var(--primary); font-size:24px; font-family:var(--font-en);">0</strong></p>
+      </div>
+
+      <button id="btn-restart-victory" class="btn-primary-large">再次複習 (RETRY)</button>
+    </div>
+
+  </div>
+
+  <script>
+    // --- AUDIO SYNTHESIZER ---
+    class WebAudio {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playTone(freq, type, duration, delay = 0) {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime + delay;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + duration);
+      }
+      correct() {
+        this.playTone(523.25, 'sine', 0.1, 0);
+        this.playTone(659.25, 'sine', 0.1, 0.08);
+        this.playTone(783.99, 'sine', 0.15, 0.16);
+      }
+      wrong() {
+        this.playTone(220, 'triangle', 0.15, 0);
+        this.playTone(174.61, 'triangle', 0.25, 0.12);
+      }
+      victory() {
+        [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => this.playTone(f, 'sine', 0.18, i * 0.12));
+      }
+    }
+
+    const sound = new WebAudio();
+
+    // --- CURRICULUM QUESTIONS ---
+    const STAGES = [
+      {
+        title: "Level 1: 養分檢驗與熱量計算",
+        questions: [
+          {
+            tag: "主題：澱粉檢驗",
+            question: "將米飯滴加『碘液』後，溶液會呈現何種顏色變化？",
+            options: ["黃褐色轉為藍黑色", "藍色轉為磚紅色", "保持透明無色", "黃褐色轉為粉紅色"],
+            correct: "黃褐色轉為藍黑色",
+            hint: "米飯富含澱粉，碘液檢驗澱粉不需加熱。",
+            misconceptions: {
+              "藍色轉為磚紅色": "【會考易混淆陷阱】『藍色轉磚紅色』是【本氏液】檢驗葡萄糖的反應！碘液本身是黃褐色，遇到澱粉會變【藍黑色】。"
+            },
+            explanation: "碘液原本呈黃褐色，遇到澱粉會產生藍黑色反應，此檢驗不需加熱。"
+          },
+          {
+            tag: "主題：葡萄糖檢驗操作",
+            question: "小明將葡萄糖水加入『本氏液』後，若『沒有進行隔水加熱』，會看到什麼現象？",
+            options: ["維持原本的藍色不變色", "直接變成磚紅色", "變成澄清無色", "產生黃色沉澱"],
+            correct: "維持原本的藍色不變色",
+            hint: "本氏液反應的關鍵操作條件是什麼？",
+            misconceptions: {
+              "直接變成磚紅色": "【會考高頻實驗陷阱】本氏液檢驗糖類【必須隔水加熱】才會反應！若未加熱，即使有糖也依然會維持原本試劑的藍色。"
+            },
+            explanation: "本氏液檢驗糖類必須隔水加熱才會變色（由藍色依序轉為綠、黃、橙、紅）。未加熱時不會產生反應，維持藍色。"
+          },
+          {
+            tag: "主題：養分每克熱量",
+            question: "下列關於各類養分每公克產生熱量的敘述，何者完全正確？",
+            options: ["脂質 9 大卡、醣類 4 大卡、蛋白質 4 大卡", "醣類 9 大卡、蛋白質 4 大卡、水 2 大卡", "蛋白質 9 大卡、脂質 4 大卡、維生素 1 大卡", "所有養分每公克皆產生 4 大卡"],
+            correct: "脂質 9 大卡、醣類 4 大卡、蛋白質 4 大卡",
+            hint: "三大產能養分中，誰的單位熱量最高？水與維生素能否產能？",
+            misconceptions: {
+              "醣類 9 大卡、蛋白質 4 大卡、水 2 大卡": "【迷思概念】脂質才是熱量最高的（9 kcal/g）；水、礦物質與維生素【不提供熱量】！"
+            },
+            explanation: "三大產能營養素：醣類 4 kcal/g、蛋白質 4 kcal/g、脂質 9 kcal/g；水、礦物質、維生素不產生熱量。"
+          },
+          {
+            tag: "主題：脂質檢驗",
+            question: "想要檢驗花生種子中是否含有『脂質』，最簡便有效的方法為何？",
+            options: ["塗在吸油面紙上觀察是否出現半透明油斑", "滴加碘液觀察是否變藍黑", "加入本氏液隔水加熱觀察顏色", "滴加強酸觀察是否凝固"],
+            correct: "塗在吸油面紙上觀察是否出現半透明油斑",
+            hint: "脂質不溶於水，可在紙張上形成透光油斑。",
+            misconceptions: {
+              "加入本氏液隔水加熱觀察顏色": "【試劑混淆】本氏液是檢驗糖類；檢驗脂質可使用吸油面紙，觀察乾後是否留下半透明油漬。"
+            },
+            explanation: "脂質檢驗常將受測物塗抹於吸油面紙或白紙上，乾燥後呈現半透明痕跡者即含有脂質。"
+          },
+          {
+            tag: "主題：唾液分解實驗",
+            question: "小華將饅頭在口中咀嚼 2 分鐘後感覺有甜味，再加入本氏液隔水加熱，結果變成了橙色。此過程說明了什麼？",
+            options: ["唾液中的酵素將澱粉分解為糖", "唾液本身含有大量葡萄糖", "咀嚼使饅頭吸收了空氣中的糖份", "牙齒直接將澱粉顆粒研磨成糖"],
+            correct: "唾液中的酵素將澱粉分解為糖",
+            hint: "唾液中含有的酵素作用是什麼？",
+            misconceptions: {
+              "唾液本身含有大量葡萄糖": "【觀念迷思】正常唾液不含糖；是唾液中的『唾液澱粉酶』將饅頭中的無甜味澱粉分解為有甜味的糖類。"
+            },
+            explanation: "饅頭（澱粉）經唾液澱粉酶催化分解為小分子的麥芽糖/糖類，因此口感變甜且能使本氏液變色。"
+          }
+        ]
+      },
+      {
+        title: "Level 2: 酵素特性、溫度與酸鹼度",
+        questions: [
+          {
+            tag: "主題：酵素主要成分",
+            question: "生物體內的『酵素』，其主要化學成分多為何種物質？",
+            options: ["蛋白質", "脂質", "醣類", "核酸"],
+            correct: "蛋白質",
+            hint: "高溫之所以會破壞酵素活性，正因為其成分為…？",
+            misconceptions: {
+              "醣類": "【核心考點】酵素的本質絕大多數為【蛋白質】！因此對溫度與 pH 極度敏感，高溫易變性失活。"
+            },
+            explanation: "酵素的主要化學成分為蛋白質，具有特定的立體結構以結合受質。"
+          },
+          {
+            tag: "主題：溫度對酵素影響",
+            question: "將唾液澱粉酶加熱至 100°C 煮沸 10 分鐘，冷卻至 37°C 後再加入澱粉液，試問澱粉能否被分解？",
+            options: ["不能，高溫已使酵素變性永久失去活性", "能，冷卻後酵素會自動修復並恢復活性", "能，但分解速度會變快 10 倍", "不能，因為澱粉在高溫下會被破壞"],
+            correct: "不能，高溫已使酵素變性永久失去活性",
+            hint: "低溫是活性降低，高溫則是變性…？",
+            misconceptions: {
+              "能，冷卻後酵素會自動修復並恢復活性": "【會考超高頻考點】低溫（0°C）只是酵素活性暫時降低，回溫可恢復；但【高溫（100°C）會使蛋白質變性永久破壞】，降溫後【無法恢復活性】！"
+            },
+            explanation: "酵素在高溫（如 100°C）下立體結構被破壞（變性），屬於不可逆反應，冷卻後無法恢復催化能力。"
+          },
+          {
+            tag: "主題：酵素最適 pH 值",
+            question: "『胃蛋白酶』在人體胃中能高效分解蛋白質，但進入小腸後卻失去活性，主要原因為何？",
+            options: ["小腸環境呈弱鹼性，不適合胃蛋白酶作用", "小腸溫度比胃低很多", "胃蛋白酶在小腸被水稀釋了", "小腸中沒有蛋白質可供分解"],
+            correct: "小腸環境呈弱鹼性，不適合胃蛋白酶作用",
+            hint: "胃液是強酸性，而小腸環境是…？",
+            misconceptions: {
+              "小腸溫度比胃低很多": "【環境酸鹼度盲點】人體體溫各器官相近；胃蛋白酶最適環境為強酸（pH ≈ 2），小腸環境呈弱鹼性（pH ≈ 8），因而使胃蛋白酶失去活性。"
+            },
+            explanation: "不同酵素有不同的最適 pH 值。胃蛋白酶適應強酸環境，進入弱鹼性的小腸後因 pH 改變而失去活性。"
+          },
+          {
+            tag: "主題：酵素專一性",
+            question: "所謂酵素具有『專一性』，其確切意涵是指下列何者？",
+            options: ["一種酵素通常只能催化一種特定受質的反應", "一種酵素只能在人體內使用一次即被消耗", "酵素只能在特定溫度 100°C 才能作用", "酵素只能存在於動物體內，植物沒有"],
+            correct: "一種酵素通常只能催化一種特定受質的反應",
+            hint: "如同一把鑰匙開一把鎖。",
+            misconceptions: {
+              "一種酵素只能在人體內使用一次即被消耗": "【專一性與重複使用混淆】『只能催化特定受質』叫【專一性】；而酵素在反應前後本質不變，可【重複使用】。"
+            },
+            explanation: "專一性指酵素的活性部位只與特定受質結合（如澱粉酶只能分解澱粉，無法分解蛋白質）。"
+          },
+          {
+            tag: "主題：酵素重複使用",
+            question: "化學反應完成後，參與催化的酵素本身會發生什麼變化？",
+            options: ["本質與質量不變，可重複催化下一次反應", "完全被消耗殆盡，轉化為產物", "分解成二氧化碳與水釋放能量", "質量增加為原本的兩倍"],
+            correct: "本質與質量不變，可重複催化下一次反應",
+            hint: "催化劑在反應前後的質量與性質如何？",
+            misconceptions: {
+              "完全被消耗殆盡，轉化為產物": "【概念迷思】受質才會轉化為產物，酵素作為生物催化劑，反應前後性質與質量均不變，可重複利用！"
+            },
+            explanation: "酵素在反應中降低活化能，加速反應速率，反應結束後釋出產物，酵素本身完好如初並可重複利用。"
+          }
+        ]
+      },
+      {
+        title: "Level 3: 消化器官分工與膽汁重點",
+        questions: [
+          {
+            tag: "主題：膽汁特性（必考）",
+            question: "下列關於人體『膽汁』的敘述，何者完全正確？（會考必考冠軍題）",
+            options: ["由肝臟製造，不含任何消化酵素，主要功能為乳化脂質", "由膽囊製造，含有高活性的脂肪分解酵素", "由胰臟製造，能將蛋白質分解為胺基酸", "由小腸分泌，呈強酸性以利殺菌"],
+            correct: "由肝臟製造，不含任何消化酵素，主要功能為乳化脂質",
+            hint: "記住：肝製、膽存、注小腸、無酵素、乳化脂肪！",
+            misconceptions: {
+              "由膽囊製造，含有高活性的脂肪分解酵素": "【會考最經典陷阱】膽汁是【肝臟製造】（膽囊只是儲存）！且膽汁【完全不含酵素】，其作用是『物理性乳化』脂質成細小油滴！"
+            },
+            explanation: "膽汁由肝臟製造、儲存於膽囊，經膽管注入小腸。膽汁不含酵素，功能是乳化脂質以增加與酵素的接觸面積。"
+          },
+          {
+            tag: "主題：膽管阻塞情境",
+            question: "若某病患因膽管結石阻塞，導致膽汁無法順利注入小腸，下列何種食物的消化吸收會受到最大影響？",
+            options: ["炸雞與五花肉（高脂質食物）", "白米飯與地瓜（富含澱粉）", "純黑咖啡與白開水", "水煮蛋白（純蛋白質）"],
+            correct: "炸雞與五花肉（高脂質食物）",
+            hint: "膽汁的功能是乳化哪一種養分？",
+            misconceptions: {
+              "水煮蛋白（純蛋白質）": "【消化液功能對應】膽汁專門協助【脂質】的乳化與消化；蛋白質消化主要仰賴胃液與胰液、腸液。"
+            },
+            explanation: "膽汁能乳化脂質，若膽管阻塞使膽汁無法進入小腸，會嚴重降低脂質的消化速率，引發消化不良或脂肪便。"
+          },
+          {
+            tag: "主題：胰液功能",
+            question: "人體的哪一種消化液中，同時含有可以分解『醣類、蛋白質、脂質』三大養分的酵素？",
+            options: ["胰液", "胃液", "唾液", "膽汁"],
+            correct: "胰液",
+            hint: "由胰臟分泌，是最全能的消化液！",
+            misconceptions: {
+              "胃液": "【器官消化液分工】胃液只能初步分解【蛋白質】；只有【胰液】（及部分腸液）能同時分解醣類、蛋白質與脂質三大營養素！"
+            },
+            explanation: "胰腺分泌的胰液含有澱粉酶、蛋白酶、脂肪酶等多種酵素，可同時消化醣類、蛋白質與脂質。"
+          },
+          {
+            tag: "主題：消化管路徑",
+            question: "食物在人體消化管中通過的正確順序為下列何者？",
+            options: ["口腔 → 咽 → 食道 → 胃 → 小腸 → 大腸 → 肛門", "口腔 → 氣管 → 胃 → 肝臟 → 小腸 → 肛門", "口腔 → 食道 → 膽囊 → 胃 → 大腸 → 小腸", "口腔 → 咽 → 胃 → 食道 → 小腸 → 大腸"],
+            correct: "口腔 → 咽 → 食道 → 胃 → 小腸 → 大腸 → 肛門",
+            hint: "肝臟、胰臟、膽囊是消化腺，食物不會直接流經它們喔！",
+            misconceptions: {
+              "口腔 → 氣管 → 胃 → 肝臟 → 小腸 → 肛門": "【消化道與消化腺混淆】食物走食道不是氣管；肝臟、膽囊、胰臟是【消化腺】，食物【不會】經過肝臟與膽囊！"
+            },
+            explanation: "消化管路徑為：口腔→咽→食道→胃→小腸→大腸→肛門。肝、膽、胰為附屬消化腺，非消化管。"
+          },
+          {
+            tag: "主題：胃的生理功能",
+            question: "下列關於『胃』在消化過程中的功能，何者敘述正確？",
+            options: ["分泌鹽酸以殺菌並提供酸性環境，初步分解蛋白質", "是人體吸收水分與所有養分最主要的器官", "能分泌酵素將澱粉徹底分解為葡萄糖", "能直接將脂肪分解為甘油與脂肪酸"],
+            correct: "分泌鹽酸以殺菌並提供酸性環境，初步分解蛋白質",
+            hint: "胃液含鹽酸與胃蛋白酶，專攻哪種養分？",
+            misconceptions: {
+              "是人體吸收水分與所有養分最主要的器官": "【吸收器官定位】人體吸收養分最主要的器官是【小腸】！胃主要功能是暫存食物與初步分解蛋白質。"
+            },
+            explanation: "胃腺分泌胃液，內含鹽酸（強酸殺菌、活化酵素）與胃蛋白酶，可將大分子蛋白質初步分解成較小胜肽。"
+          }
+        ]
+      },
+      {
+        title: "Level 4: 小腸吸收、大腸與會考綜合",
+        questions: [
+          {
+            tag: "主題：小腸絨毛構造",
+            question: "小腸內壁具有數以百萬計的『絨毛』突起，此構造最主要的生物學意義為何？",
+            options: ["大幅增加小腸吸收養分的表面積", "用來阻擋食物移動以延長消化時間", "防止胃酸直接流入大腸破壞組織", "專門用來分泌大量膽汁殺菌"],
+            correct: "大幅增加小腸吸收養分的表面積",
+            hint: "絨毛、肺泡、根毛都有類似的共同適應特徵：增加什麼？",
+            misconceptions: {
+              "用來阻擋食物移動以延長消化時間": "【構造適應考點】絨毛（同肺泡、植物根毛）的主要特徵就是【大幅增加接觸表面積】，以提升物質吸收效率！"
+            },
+            explanation: "小腸內壁皺褶與絨毛使小腸內部表面積增加達數百倍，能極有效率地吸收被分解完成的小分子養分。"
+          },
+          {
+            tag: "主題：吸收小分子形式",
+            question: "大分子養分經消化管徹底分解後，分別轉化為何種『小分子』才能被小腸絨毛吸收？",
+            options: ["澱粉轉為葡萄糖、蛋白質轉為胺基酸、脂質轉為脂肪酸與甘油", "澱粉轉為胺基酸、蛋白質轉為葡萄糖、脂質轉為多醣", "澱粉轉為脂肪酸、蛋白質轉為麥芽糖、脂質轉為胺基酸", "所有養分皆直接轉化為無機鹽後吸收"],
+            correct: "澱粉轉為葡萄糖、蛋白質轉為胺基酸、脂質轉為脂肪酸與甘油",
+            hint: "記住三大養分分解的最終基本單元！",
+            misconceptions: {
+              "澱粉轉為胺基酸、蛋白質轉為葡萄糖、脂質轉為多醣": "【產物配對混淆】醣類(澱粉)→葡萄糖；蛋白質→胺基酸；脂質→脂肪酸+甘油。"
+            },
+            explanation: "消化終產物：多醣/澱粉分解為單醣(葡萄糖)；蛋白質分解為胺基酸；脂質分解為脂肪酸與甘油，方能穿透細胞膜被吸收。"
+          },
+          {
+            tag: "主題：食物消化起點",
+            question: "小明午餐吃了一份『起司牛肉堡（內含麵包、牛肉、起司、生菜）』，其中『牛肉（蛋白質）』最先在哪一個消化器官開始被化學消化？",
+            options: ["胃", "口腔", "小腸", "大腸"],
+            correct: "胃",
+            hint: "澱粉從口腔開始，蛋白質從哪裡開始？",
+            misconceptions: {
+              "口腔": "【消化起點盲點】口腔只能分解【澱粉】（麵包）；牛肉是【蛋白質】，化學消化是從【胃】（胃蛋白酶）開始！"
+            },
+            explanation: "澱粉化學消化始於口腔；蛋白質化學消化始於胃；脂質化學消化則始於小腸。"
+          },
+          {
+            tag: "主題：大腸生理功能",
+            question: "下列關於人體『大腸』的生理功能敘述，何者正確？",
+            options: ["主要功能為吸收食物殘渣中多餘的水分與礦物質，不具顯著消化功能", "是人體分泌消化酵素最多、消化速度最快的器官", "主要功能為分泌膽汁並儲存葡萄糖", "能將纖維素完全分解為蛋白質與脂肪"],
+            correct: "主要功能為吸收食物殘渣中多餘的水分與礦物質，不具顯著消化功能",
+            hint: "大腸不分泌消化酵素，主要吸收什麼？",
+            misconceptions: {
+              "是人體分泌消化酵素最多、消化速度最快的器官": "【大腸功能迷思】大腸【不分泌消化酵素】，其主要任務是吸收水分，將未消化的殘渣形成糞便。"
+            },
+            explanation: "大腸不分泌消化酵素，主要吸收剩餘的水分與無機鹽，並藉由共生菌群合成維生素，最後形成糞便由肛門排出。"
+          },
+          {
+            tag: "主題：實驗變因設計",
+            question: "【會考情境題】在探討『唾液分解澱粉』的實驗中，甲試管裝『澱粉液+唾液』放在 37°C 水浴中，乙試管裝『澱粉液+清水』放在 37°C 水浴中。此實驗中乙試管扮演的角色與『操縱變因』為何？",
+            options: ["乙為對照組；操縱變因為是否有唾液（酵素）", "乙為實驗組；操縱變因為水浴溫度", "乙為對照組；操縱變因為澱粉液濃度", "乙為實驗組；操縱變因為試管大小"],
+            correct: "乙為對照組；操縱變因為是否有唾液（酵素）",
+            hint: "兩試管唯一的差別（操縱變因）是什麼？不加唾液的試管作為…？",
+            misconceptions: {
+              "乙為實驗組；操縱變因為水浴溫度": "【實驗變因設計陷阱】溫度兩管都是 37°C（控制變因保持一致）；唯一的不同是有無加入唾液（操縱變因），未加唾液的乙試管為【對照組】！"
+            },
+            explanation: "探討唾液效果時，兩組唯一的差別是「有無唾液」（操縱變因），其他如溫度、水量、澱粉量皆相同（控制變因），未加唾液之乙試管為對照組。"
+          }
+        ]
+      }
+    ];
+
+    // --- APP CONTROLLER ---
+    class BioApp {
+      constructor() {
+        this.currentStageIdx = 0;
+        this.currentQuestionIdx = 0;
+        this.score = 0;
+        this.isAnswering = false;
+
+        this.elScore = document.getElementById('score-val');
+        this.elLevelTitle = document.getElementById('level-title');
+        this.elStepper = document.getElementById('stepper-dots');
+        this.elQuestTag = document.getElementById('quest-tag');
+        this.elQuestionText = document.getElementById('question-text');
+        this.elQuestionHint = document.getElementById('question-hint');
+        this.elOptionsGrid = document.getElementById('options-grid');
+
+        this.modal = document.getElementById('modal-explanation');
+        this.elMisconception = document.getElementById('misconception-box');
+        this.elExplanation = document.getElementById('explanation-box');
+        this.btnModalNext = document.getElementById('btn-modal-next');
+
+        this.screenStart = document.getElementById('screen-start');
+        this.screenVictory = document.getElementById('screen-victory');
+        this.canvas = document.getElementById('bio-canvas');
+        this.ctx = this.canvas.getContext('2d');
+
+        this.bindEvents();
+      }
+
+      bindEvents() {
+        document.getElementById('btn-start').addEventListener('click', () => {
+          sound.init();
+          this.startQuiz();
+        });
+
+        document.getElementById('btn-restart-victory').addEventListener('click', () => {
+          this.startQuiz();
+        });
+
+        this.btnModalNext.addEventListener('click', () => {
+          this.modal.style.display = 'none';
+          this.nextQuestion();
+        });
+
+        const btnSound = document.getElementById('btn-sound');
+        btnSound.addEventListener('click', () => {
+          sound.muted = !sound.muted;
+          btnSound.textContent = sound.muted ? '🔇 音效: 關' : '🔊 音效: 開';
+        });
+
+        window.addEventListener('keydown', (e) => {
+          if (this.isAnswering || this.modal.style.display === 'flex') return;
+          if (['1', '2', '3', '4'].includes(e.key)) {
+            const idx = parseInt(e.key, 10) - 1;
+            const btns = this.elOptionsGrid.querySelectorAll('.option-btn');
+            if (btns[idx]) btns[idx].click();
+          }
+        });
+
+        window.addEventListener('resize', () => this.drawVisual());
+      }
+
+      startQuiz() {
+        this.screenStart.style.display = 'none';
+        this.screenVictory.style.display = 'none';
+        this.currentStageIdx = 0;
+        this.currentQuestionIdx = 0;
+        this.score = 0;
+        this.elScore.textContent = this.score;
+        this.loadStage(0);
+      }
+
+      loadStage(stageIdx) {
+        this.currentStageIdx = stageIdx;
+        this.currentQuestionIdx = 0;
+        const stage = STAGES[stageIdx];
+        this.elLevelTitle.textContent = stage.title;
+        this.renderStepper();
+        this.loadQuestion();
+      }
+
+      renderStepper() {
+        this.elStepper.innerHTML = '';
+        const stage = STAGES[this.currentStageIdx];
+        stage.questions.forEach((_, i) => {
+          const dot = document.createElement('div');
+          dot.className = 'step-dot' + (i === this.currentQuestionIdx ? ' active' : '') + (i < this.currentQuestionIdx ? ' cleared' : '');
+          this.elStepper.appendChild(dot);
+        });
+      }
+
+      loadQuestion() {
+        this.isAnswering = false;
+        const stage = STAGES[this.currentStageIdx];
+        const q = stage.questions[this.currentQuestionIdx];
+
+        this.elQuestTag.textContent = `${q.tag} (${this.currentQuestionIdx + 1}/${stage.questions.length})`;
+        this.elQuestionText.textContent = q.question;
+        this.elQuestionHint.textContent = `💡 提示：${q.hint}`;
+
+        this.elOptionsGrid.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.innerHTML = `<span class="opt-key">${idx + 1}</span> <span>${opt}</span>`;
+          btn.addEventListener('click', () => this.handleAnswer(opt, btn, q));
+          this.elOptionsGrid.appendChild(btn);
+        });
+
+        this.renderStepper();
+        this.drawVisual();
+      }
+
+      drawVisual() {
+        const ctx = this.ctx;
+        const w = this.canvas.width = this.canvas.parentElement.clientWidth;
+        const h = this.canvas.height = this.canvas.parentElement.clientHeight;
+        ctx.clearRect(0, 0, w, h);
+
+        if (this.currentStageIdx === 0) {
+          // Clean test tubes visual
+          const items = [
+            { title: "碘液 + 澱粉", color: "#1e1b4b", desc: "藍黑色 (免加熱)" },
+            { title: "本氏液 + 糖", color: "#dc2626", desc: "紅沉澱 (需隔水加熱)" },
+            { title: "脂質檢測", color: "#eab308", desc: "半透明油漬 (吸油紙)" }
+          ];
+          const colW = (w - 32) / 3;
+          items.forEach((it, i) => {
+            const x = 16 + i * colW;
+            ctx.fillStyle = "#ffffff";
+            ctx.strokeStyle = "#cbd5e1";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.roundRect(x, 6, colW - 12, h - 12, 8);
+            ctx.fill();
+            ctx.stroke();
+
+            // Color indicator dot
+            ctx.fillStyle = it.color;
+            ctx.beginPath();
+            ctx.arc(x + 16, h / 2, 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = "#0f172a";
+            ctx.font = "bold 11px sans-serif";
+            ctx.textAlign = "left";
+            ctx.fillText(it.title, x + 28, h / 2 - 4);
+
+            ctx.fillStyle = "#64748b";
+            ctx.font = "10px sans-serif";
+            ctx.fillText(it.desc, x + 28, h / 2 + 10);
+          });
+        } else if (this.currentStageIdx === 1) {
+          // Clean enzyme bell curve
+          ctx.strokeStyle = "#cbd5e1";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(30, h - 14);
+          ctx.lineTo(w - 30, h - 14);
+          ctx.stroke();
+
+          ctx.strokeStyle = "#0ea5e9";
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          const midX = w / 2;
+          ctx.moveTo(40, h - 16);
+          ctx.quadraticCurveTo(midX, -6, w - 40, h - 16);
+          ctx.stroke();
+
+          ctx.fillStyle = "#0284c7";
+          ctx.beginPath();
+          ctx.arc(midX, (h - 16) * 0.38, 5, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = "#0f172a";
+          ctx.font = "bold 11px sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("⭐ 最適溫度 / 最適 pH (高溫 100°C 變性不可逆失活)", midX, 16);
+        } else {
+          // Clean digestive tract steps
+          const nodes = ["口腔 (澱粉)", "胃 (蛋白質)", "小腸 (消化吸收總部)", "大腸 (水分)"];
+          const stepW = (w - 20) / nodes.length;
+          nodes.forEach((n, i) => {
+            const x = 10 + i * stepW + stepW / 2;
+            const y = h / 2;
+
+            ctx.fillStyle = (i === 2) ? "#0ea5e9" : "#64748b";
+            ctx.beginPath();
+            ctx.arc(x, y - 6, 7, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (i < nodes.length - 1) {
+              ctx.strokeStyle = "#e2e8f0";
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(x + 10, y - 6);
+              ctx.lineTo(x + stepW - 10, y - 6);
+              ctx.stroke();
+            }
+
+            ctx.fillStyle = (i === 2) ? "#0284c7" : "#475569";
+            ctx.font = (i === 2) ? "bold 11px sans-serif" : "11px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText(n, x, y + 16);
+          });
+        }
+      }
+
+      handleAnswer(selectedOption, btn, q) {
+        if (this.isAnswering) return;
+        this.isAnswering = true;
+
+        const isCorrect = selectedOption === q.correct;
+
+        if (isCorrect) {
+          btn.classList.add('correct');
+          sound.correct();
+          this.score += 100;
+          this.elScore.textContent = this.score;
+
+          setTimeout(() => {
+            this.nextQuestion();
+          }, 800);
+        } else {
+          btn.classList.add('wrong');
+          sound.wrong();
+
+          const allBtns = this.elOptionsGrid.querySelectorAll('.option-btn');
+          allBtns.forEach(b => {
+            if (b.innerText.includes(q.correct)) b.classList.add('correct');
+          });
+
+          setTimeout(() => {
+            this.showExplanation(selectedOption, q);
+          }, 600);
+        }
+      }
+
+      showExplanation(selectedOption, q) {
+        const misText = q.misconceptions && q.misconceptions[selectedOption]
+          ? q.misconceptions[selectedOption]
+          : "【盲點提醒】請特別留意題目中的關鍵受質、酵素專一性與實驗操作條件！";
+
+        this.elMisconception.innerHTML = `<strong>⚠️ 易錯盲點：</strong><br/>${misText}`;
+        this.elExplanation.innerHTML = `<strong>📝 會考標準觀念：</strong><br/>正確解答：<strong style="color:var(--success); font-size:14px;">${q.correct}</strong><br/>${q.explanation}`;
+        this.modal.style.display = 'flex';
+      }
+
+      nextQuestion() {
+        const stage = STAGES[this.currentStageIdx];
+        this.currentQuestionIdx++;
+
+        if (this.currentQuestionIdx >= stage.questions.length) {
+          if (this.currentStageIdx + 1 < STAGES.length) {
+            this.loadStage(this.currentStageIdx + 1);
+          } else {
+            this.victory();
+          }
+        } else {
+          this.loadQuestion();
+        }
+      }
+
+      victory() {
+        sound.victory();
+        document.getElementById('final-score').textContent = this.score;
+        this.screenVictory.style.display = 'flex';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.app = new BioApp();
+    });
+  </script>
+</body>
+</html>
