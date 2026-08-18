@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生命之源：科學探索與細胞奧秘 | 國中生物會考第一章 自然風 Web 闖關遊戲</title>
+  <meta name="description" content="專為國中生物會考第一章打造的自然森林風 Web 闖關遊戲，精準涵蓋科學方法、生命特性、細胞構造比較、顯微鏡操作與生物組成層次。">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+  <style>
+    :root {
+      --color-forest-dark: #081c15;
+      --color-forest-deep: #1b4332;
+      --color-forest-mid: #2d6a4f;
+      --color-forest-light: #52b788;
+      --color-forest-soft: #74c69d;
+      --color-mint-light: #d8f3dc;
+      --color-leaf-gold: #e9c46a;
+      --color-coral-accent: #e76f51;
+      --color-text-main: #1b4332;
+      --color-text-body: #2d3748;
+      --color-text-muted: #64748b;
+      --color-bg-card: #ffffff;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --shadow-nature: 0 10px 25px -5px rgba(27, 67, 50, 0.15);
+      --font-chinese: 'Noto Sans TC', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background: radial-gradient(circle at 50% 30%, #e8f5e9 0%, #c8e6c9 60%, #a5d6a7 100%);
+      font-family: var(--font-chinese); color: var(--color-text-body);
+      display: flex; justify-content: center; align-items: center;
+    }
+    #app-container {
+      width: 100vw; height: 100vh; max-width: 1050px; max-height: 780px;
+      background: var(--color-bg-card); border: 3px solid var(--color-forest-deep);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-nature);
+      display: flex; flex-direction: column; overflow: hidden; position: relative;
+    }
+    #hud-bar {
+      height: 74px; background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
+      border-bottom: 3px solid var(--color-leaf-gold); display: flex;
+      align-items: center; justify-content: space-between; padding: 0 24px; color: #ffffff; z-index: 10;
+    }
+    .hud-player-info { display: flex; align-items: center; gap: 12px; }
+    .hud-avatar {
+      width: 46px; height: 46px; background: rgba(255, 255, 255, 0.15);
+      border: 2px solid var(--color-leaf-gold); border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-size: 24px;
+    }
+    .hud-bars { display: flex; flex-direction: column; gap: 3px; min-width: 130px; }
+    .bar-wrap { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; }
+    .nature-bar { flex: 1; height: 10px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 6px; position: relative; overflow: hidden; }
+    .nature-bar-fill { height: 100%; background: linear-gradient(90deg, #52b788, #74c69d); border-radius: 4px; transition: width 0.3s ease; }
+    .hud-center-stage { text-align: center; }
+    .stage-title { font-size: 15px; font-weight: 800; color: var(--color-leaf-gold); margin-bottom: 4px; }
+    .stage-progress-pills { display: flex; justify-content: center; gap: 8px; }
+    .progress-dot { width: 10px; height: 10px; background: rgba(255, 255, 255, 0.25); border-radius: 50%; transition: all 0.25s ease; }
+    .progress-dot.active { background: var(--color-leaf-gold); transform: scale(1.3); box-shadow: 0 0 8px var(--color-leaf-gold); }
+    .progress-dot.cleared { background: var(--color-mint-light); }
+    .hud-stats { display: flex; align-items: center; gap: 14px; }
+    .stat-box { background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 4px 14px; display: flex; align-items: center; gap: 6px; }
+    .stat-label { font-size: 11px; color: var(--color-mint-light); }
+    .stat-value { font-size: 16px; font-weight: 800; color: #ffffff; }
+    .btn-nature-icon { background: rgba(255, 255, 255, 0.15); border: 1px solid var(--color-leaf-gold); color: #ffffff; border-radius: 12px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
+    #main-stage { flex: 1; display: flex; flex-direction: column; padding: 14px 24px; gap: 12px; min-height: 0; background: #fbfdfa; }
+    .nature-arena {
+      flex: 1.1; background: linear-gradient(180deg, #d8f3dc 0%, #b7e4c7 60%, #95d5b2 100%);
+      border: 2px solid var(--color-forest-light); border-radius: var(--radius-md); position: relative;
+      overflow: hidden; display: flex; justify-content: space-between; align-items: flex-end; padding: 16px 40px 18px 40px;
+    }
+    .hero-wrapper, .monster-wrapper { display: flex; flex-direction: column; align-items: center; z-index: 2; position: relative; }
+    .hero-avatar-box, .monster-avatar-box {
+      width: 85px; height: 85px; background: #ffffff; border: 3px solid var(--color-forest-deep);
+      border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 44px;
+      box-shadow: 0 8px 16px rgba(27, 67, 50, 0.15); transition: transform 0.2s ease;
+    }
+    .char-nametag { background: #ffffff; border: 1px solid var(--color-forest-mid); border-radius: 12px; padding: 3px 12px; font-size: 12px; font-weight: 700; color: var(--color-forest-dark); margin-top: 6px; }
+    .monster-hp-wrap { width: 85px; margin-top: 4px; }
+    .floating-fx { position: absolute; font-size: 18px; font-weight: 800; animation: floatLeaf 0.8s ease-out forwards; pointer-events: none; z-index: 20; text-shadow: 1px 1px 0 #fff; }
+    .nature-board-container { height: 76px; background: #ffffff; border: 1.5px solid #d1e7dd; border-radius: var(--radius-md); padding: 6px 16px; display: flex; flex-direction: column; }
+    .nature-board-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; color: var(--color-forest-deep); margin-bottom: 2px; }
+    .nature-canvas-wrap { flex: 1; position: relative; width: 100%; }
+    #nature-canvas { width: 100%; height: 100%; display: block; }
+    #question-panel { background: #ffffff; border: 2px solid #e2ece9; border-radius: var(--radius-md); padding: 14px 20px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow-nature); }
+    .question-header { display: flex; align-items: center; justify-content: space-between; }
+    .quest-badge { background: var(--color-mint-light); color: var(--color-forest-deep); border: 1px solid var(--color-forest-soft); border-radius: 8px; padding: 2px 10px; font-size: 12px; font-weight: 800; }
+    .question-box { background: #f8faf9; border: 1.5px solid #e2ece9; border-radius: 12px; padding: 10px 16px; text-align: center; }
+    .question-title-text { font-size: 20px; font-weight: 900; line-height: 1.5; color: var(--color-forest-deep, #1b4332); }
+    .question-hint-text { margin-top: 4px; font-size: 14px; color: var(--color-forest-mid, #2d6a4f); }
+    .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .nature-btn {
+      background: #ffffff; color: var(--color-text-body); border: 1.5px solid #cbd5e1; border-radius: 12px;
+      padding: 12px 16px; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px;
+      transition: all 0.15s ease; outline: none; text-align: left;
+    }
+    .nature-btn:hover { background: #e8f5e9; border-color: var(--color-forest-light); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(45, 106, 79, 0.12); }
+    .nature-btn .btn-key { width: 26px; height: 26px; background: var(--color-mint-light); color: var(--color-forest-deep); border-radius: 6px; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .nature-btn.btn-correct { background: #d1fae5 !important; border-color: #10b981 !important; color: #065f46 !important; }
+    .nature-btn.btn-wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; animation: leafShake 0.3s ease; }
+    .modal-backdrop { position: absolute; inset: 0; background: rgba(8, 28, 21, 0.65); display: none; justify-content: center; align-items: center; z-index: 100; backdrop-filter: blur(4px); }
+    .nature-dialog { width: 90%; max-width: 560px; background: #ffffff; border: 2px solid var(--color-forest-light); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .dialog-header { display: flex; align-items: center; gap: 10px; border-bottom: 1.5px solid #e2ece9; padding-bottom: 8px; }
+    .dialog-title { font-size: 17px; font-weight: 800; color: var(--color-forest-deep); }
+    .misconception-box { background: #fef2f2; border-left: 4px solid #ef4444; border-radius: 6px; padding: 10px 14px; font-size: 15px; color: #991b1b; line-height: 1.5; }
+    .step-by-step { background: #f8faf9; border: 1px solid #e2ece9; border-radius: 8px; padding: 10px 14px; font-size: 15px; color: var(--color-text-body); line-height: 1.6; }
+    .dialog-footer { display: flex; justify-content: flex-end; }
+    .overlay-screen { position: absolute; inset: 0; background: #fbfdfa; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 80; padding: 24px; text-align: center; }
+    .game-title-main { font-size: 26px; font-weight: 900; color: var(--color-forest-deep); margin-bottom: 4px; }
+    .game-subtitle { font-size: 14px; color: var(--color-forest-mid); font-weight: 700; margin-bottom: 20px; }
+    .instructions-card { background: #ffffff; border: 1.5px solid #d1e7dd; border-radius: var(--radius-md); padding: 16px 20px; max-width: 520px; margin-bottom: 24px; font-size: 13px; text-align: left; line-height: 1.8; box-shadow: 0 4px 12px rgba(27, 67, 50, 0.06); }
+    .instructions-card ul { padding-left: 20px; }
+    .btn-start-nature { background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%); color: #ffffff; border: none; border-radius: 14px; padding: 14px 40px; font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 18px rgba(45, 106, 79, 0.3); }
+    @keyframes floatLeaf { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-35px); opacity: 0; } }
+    @keyframes leafShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+    .anim-attack { animation: natureAttack 0.3s ease; }
+    .anim-hurt { animation: natureHurt 0.35s ease; }
+    @keyframes natureAttack { 0% { transform: translateX(0); } 40% { transform: translateX(35px); } 100% { transform: translateX(0); } }
+    @keyframes natureHurt { 0% { transform: scale(1); } 30% { transform: scale(0.9); } 100% { transform: scale(1); } }
+    @media (max-width: 768px) { #app-container { max-height: 100vh; border: none; border-radius: 0; } .options-grid { grid-template-columns: 1fr; } .question-title-text { font-size: 20px; font-weight: 900; line-height: 1.5; color: var(--color-forest-deep, #1b4332); } }
+  </style>
+</head>
+<body>
+  <div id="app-container">
+    <header id="hud-bar">
+      <div class="hud-player-info">
+        <div class="hud-avatar"><span>🌿</span></div>
+        <div class="hud-bars">
+          <div class="bar-wrap">
+            <span class="bar-label">HP</span>
+            <div class="nature-bar"><div id="player-hp-bar" class="nature-bar-fill" style="width: 100%;"></div></div>
+            <span id="player-hp-text" style="font-size:11px; color:#d8f3dc;">100/100</span>
+          </div>
+          <div class="bar-wrap">
+            <span style="color:var(--color-leaf-gold);">BIO CH1</span>
+            <span style="font-size:11px; color:#b7e4c7;">科學與細胞</span>
+          </div>
+        </div>
+      </div>
+      <div class="hud-center-stage">
+        <div id="stage-title" class="stage-title">Level 1: 探索之森</div>
+        <div id="stage-pills" class="stage-progress-pills"></div>
+      </div>
+      <div class="hud-stats">
+        <div id="combo-pill" style="display:none; background:#2d6a4f; color:#fff; font-weight:800; padding:4px 10px; border-radius:12px; border:1px solid #74c69d; font-size:11px;">連對 x<span id="combo-count">2</span>!</div>
+        <div class="stat-box"><span class="stat-label">得分</span><span id="score-val" class="stat-value">00000</span></div>
+        <button id="btn-sound-toggle" class="btn-nature-icon">🔊 音效: 開</button>
+      </div>
+    </header>
+
+    <main id="main-stage">
+      <section class="nature-arena">
+        <div class="hero-wrapper">
+          <div class="hero-avatar-box"><span>🧑‍🌾</span></div>
+          <div class="char-nametag">自然探究學者</div>
+        </div>
+        <div class="monster-wrapper">
+          <div class="monster-avatar-box"><span id="monster-emoji">🍂</span></div>
+          <div id="monster-name" class="char-nametag" style="color:#e76f51;">迷思枯葉怪</div>
+          <div class="monster-hp-wrap">
+            <div class="nature-bar" style="height:8px;"><div id="monster-hp-bar" class="nature-bar-fill" style="width: 100%;"></div></div>
+          </div>
+        </div>
+      </section>
+      <section class="nature-board-container">
+        <div class="nature-board-header">
+          <span>🍃 探究步驟 / 動植物細胞對照 / 顯微鏡成像 / 組成層次</span>
+          <span style="color:#2d6a4f; font-size:11px;">★ 會考自然學習板</span>
+        </div>
+        <div class="nature-canvas-wrap"><canvas id="nature-canvas"></canvas></div>
+      </section>
+    </main>
+
+    <footer id="question-panel">
+      <div class="question-header">
+        <span id="quest-badge" class="quest-badge">第 1 關 - 題 1/5</span>
+        <span style="font-size:12px; color:var(--color-text-muted); font-weight:700;">鍵盤支援：按下 [1] - [4] 鍵快速作答</span>
+      </div>
+      <div class="question-box">
+        <div id="formula-text" class="question-title-text">題目載入中...</div>
+        <div id="formula-hint" class="question-hint-text">💡 提示：正在載入會考核心考點...</div>
+      </div>
+      <div id="options-grid" class="options-grid"></div>
+    </footer>
+
+    <div id="modal-explanation" class="modal-backdrop">
+      <div class="nature-dialog">
+        <div class="dialog-header">
+          <span style="font-size:26px;">🍃</span>
+          <div id="modal-title" class="dialog-title">自然學者筆記：觀念解析與迷思診斷</div>
+        </div>
+        <div id="modal-content" style="display:flex; flex-direction:column; gap:10px;"></div>
+        <div class="dialog-footer">
+          <button id="btn-modal-continue" class="btn-start-nature" style="font-size:14px; padding:8px 24px;">弄懂了，繼續前進 ➔</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="screen-title" class="overlay-screen">
+      <div style="font-size:68px; margin-bottom:12px;">🌱🔬</div>
+      <h1 class="game-title-main">生命之源：科學探索與細胞奧秘</h1>
+      <h2 class="game-subtitle">★ 國中生物會考第一章 自然風闖關特訓 ★</h2>
+      <div class="instructions-card">
+        <strong style="color:var(--color-forest-deep);">【四大自然探究單元】：</strong>
+        <ul>
+          <li>🍂 <strong>Level 1 探索之森</strong>：科學探究步驟、操縱變因、四大生命現象判定。</li>
+          <li>🦎 <strong>Level 2 細胞密室</strong>：細胞學說、共有胞器(核/膜/質/粒線體)、植物特有構造(壁/綠/大液胞)。</li>
+          <li>🔍 <strong>Level 3 顯微鏡之鏡</strong>：複式顯微鏡倒像(p➔d)、高低倍鏡視野比較、細調節輪。</li>
+          <li>🌳 <strong>Level 4 生命之樹</strong>：動物組成層次 vs 植物(無器官系統)、單細胞 vs 多細胞分工！</li>
+        </ul>
+      </div>
+      <button id="btn-start-game" class="btn-start-nature">開始自然探索 (START) ➔</button>
+    </div>
+
+    <div id="screen-victory" class="overlay-screen" style="display:none;">
+      <div style="font-size:64px; margin-bottom:12px;">🎉🌿</div>
+      <h1 class="game-title-main" style="color:var(--color-forest-light);">EXPLORATION COMPLETED!</h1>
+      <h2 class="game-subtitle">恭喜你已完全掌握第一章科學方法與細胞學說所有考點！</h2>
+      <div class="instructions-card" style="text-align:center;">
+        <p style="font-size:18px; margin-bottom:8px;">榮獲認證：<strong style="color:var(--color-leaf-gold);">【自然生命首席博物學者】</strong></p>
+        <p>最終探索得分：<strong id="final-victory-score" style="color:var(--color-forest-deep); font-size:28px;">00000</strong></p>
+      </div>
+      <button id="btn-restart-victory" class="btn-start-nature">再次探索 (RETRY)</button>
+    </div>
+
+    <div id="screen-gameover" class="overlay-screen" style="display:none;">
+      <div style="font-size:64px; margin-bottom:12px;">🥀</div>
+      <h1 class="game-title-main" style="color:#ef4444;">探索中斷！</h1>
+      <h2 class="game-subtitle">生命值歸零，整理好筆記重新再來一次吧！</h2>
+      <div class="instructions-card" style="text-align:center;">
+        <p>本次得分：<strong id="final-gameover-score" style="color:var(--color-text-body); font-size:22px;">00000</strong></p>
+      </div>
+      <button id="btn-restart-gameover" class="btn-start-nature" style="background:#ef4444;">再次挑戰 (RETRY)</button>
+    </div>
+  </div>
+
+  <script>
+    const GAME_BALANCE = { playerMaxHp: 100, damageToPlayer: 20, damageToMonster: 35, scorePerQuestion: 100, questionsPerLevel: 5, maxLevels: 4 };
+
+    class NatureAudioEngine {
+      constructor() { this.ctx = null; this.muted = false; }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playTone(freq, type, duration, startTime = 0) {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime + startTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type; osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(0.16, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        osc.connect(gain); gain.connect(this.ctx.destination);
+        osc.start(now); osc.stop(now + duration);
+      }
+      playCorrect() { this.playTone(523.25, 'sine', 0.15, 0); this.playTone(659.25, 'sine', 0.15, 0.08); this.playTone(783.99, 'sine', 0.2, 0.16); this.playTone(1046.50, 'sine', 0.3, 0.24); }
+      playWrong() { this.playTone(261.63, 'triangle', 0.15, 0); this.playTone(220.00, 'triangle', 0.25, 0.12); }
+      playAttack() { this.playTone(350, 'sine', 0.1, 0); this.playTone(700, 'sine', 0.12, 0.05); }
+      playLevelUp() { [440, 554.37, 659.25, 880].forEach((n, i) => this.playTone(n, 'sine', 0.16, i * 0.09)); }
+      playVictory() { [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((n, i) => this.playTone(n, 'sine', 0.2, i * 0.12)); }
+    }
+    const audio = new NatureAudioEngine();
+
+    class NatureVisualizer {
+      constructor(canvas) { this.canvas = canvas; this.ctx = canvas.getContext('2d'); }
+      render(level = 1) {
+        const ctx = this.ctx;
+        const w = this.canvas.width = this.canvas.parentElement.clientWidth;
+        const h = this.canvas.height = this.canvas.parentElement.clientHeight;
+        ctx.clearRect(0, 0, w, h);
+        if (level === 1) this.drawScientificSteps(ctx, w, h);
+        else if (level === 2) this.drawCellStructure(ctx, w, h);
+        else if (level === 3) this.drawMicroscopeOptics(ctx, w, h);
+        else this.drawHierarchy(ctx, w, h);
+      }
+      drawScientificSteps(ctx, w, h) {
+        const steps = ["1. 觀察提問", "2. 形成假說", "3. 變因實驗", "4. 數據結論"];
+        const stepW = (w - 20) / steps.length;
+        steps.forEach((s, i) => {
+          const x = 10 + i * stepW + stepW / 2, y = h / 2;
+          ctx.fillStyle = (i === 2) ? "#2d6a4f" : "#52b788";
+          ctx.beginPath(); ctx.arc(x, y - 6, 7, 0, Math.PI * 2); ctx.fill();
+          if (i < steps.length - 1) {
+            ctx.strokeStyle = "#b7e4c7"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x + 8, y - 6); ctx.lineTo(x + stepW - 8, y - 6); ctx.stroke();
+          }
+          ctx.fillStyle = "#1b4332"; ctx.font = "bold 10px 'Noto Sans TC', sans-serif"; ctx.textAlign = "center"; ctx.fillText(s, x, y + 16);
+        });
+      }
+      drawCellStructure(ctx, w, h) {
+        const colW = (w - 20) / 2;
+        ctx.fillStyle = "#d8f3dc"; ctx.strokeStyle = "#2d6a4f"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.roundRect(10, 6, colW - 8, h - 12, 8); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = "#1b4332"; ctx.font = "bold 10px 'Noto Sans TC', sans-serif"; ctx.textAlign = "center"; ctx.fillText("🌿 植物細胞 (細胞壁+葉綠體+大液胞)", 10 + (colW - 8) / 2, h / 2 - 4);
+        ctx.fillStyle = "#52b788"; ctx.font = "9px 'Noto Sans TC', sans-serif"; ctx.fillText("細胞核・細胞質・細胞膜・粒線體", 10 + (colW - 8) / 2, h / 2 + 10);
+
+        ctx.fillStyle = "#fefae0"; ctx.strokeStyle = "#e76f51"; ctx.beginPath(); ctx.roundRect(colW + 10, 6, colW - 8, h - 12, 8); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = "#603813"; ctx.font = "bold 10px 'Noto Sans TC', sans-serif"; ctx.fillText("🐾 動物細胞 (無細胞壁/無葉綠體)", colW + 10 + (colW - 8) / 2, h / 2 - 4);
+        ctx.fillStyle = "#8a5a36"; ctx.font = "9px 'Noto Sans TC', sans-serif"; ctx.fillText("形狀不規則・小液胞・粒線體", colW + 10 + (colW - 8) / 2, h / 2 + 10);
+      }
+      drawMicroscopeOptics(ctx, w, h) {
+        const midX = w / 2, midY = h / 2;
+        ctx.fillStyle = "#f8faf9"; ctx.strokeStyle = "#52b788"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.roundRect(20, 6, w - 40, h - 12, 8); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = "#1b4332"; ctx.font = "bold 11px 'Noto Sans TC', sans-serif"; ctx.textAlign = "center"; ctx.fillText("🔬 複式顯微鏡成像特徵：上下顛倒、左右相反 (實物「p」 ➔ 視野「d」)", midX, midY - 4);
+        ctx.fillStyle = "#2d6a4f"; ctx.font = "10px 'Noto Sans TC', sans-serif"; ctx.fillText("★ 高倍鏡：視野變小・細胞變少・視野變暗・需用細調節輪", midX, midY + 12);
+      }
+      drawHierarchy(ctx, w, h) {
+        const nodes = ["細胞 (Cell)", "組織 (Tissue)", "器官 (Organ)", "系統 (System/動)", "個體 (Organism)"];
+        const stepW = (w - 20) / nodes.length;
+        nodes.forEach((n, i) => {
+          const x = 10 + i * stepW + stepW / 2, y = h / 2;
+          ctx.fillStyle = (i === 3) ? "#e76f51" : "#2d6a4f";
+          ctx.beginPath(); ctx.arc(x, y - 6, 7, 0, Math.PI * 2); ctx.fill();
+          if (i < nodes.length - 1) {
+            ctx.strokeStyle = "#cbd5e1"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x + 8, y - 6); ctx.lineTo(x + stepW - 8, y - 6); ctx.stroke();
+          }
+          ctx.fillStyle = (i === 3) ? "#e76f51" : "#1b4332";
+          ctx.font = (i === 3) ? "bold 9px sans-serif" : "9px sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText(n, x, y + 16);
+        });
+      }
+    }
+
+    const CHAPTER1_STAGES = [
+      {
+        level: 1,
+        title: "Level 1: 探索之森 (科學方法與生命特性)",
+        monsterName: "迷思枯葉怪",
+        monsterEmoji: "🍂",
+        questions: [
+          {
+            formula: "在科學探究的標準流程中，下列各步驟的先後順序何者最為合理？",
+            options: ["觀察 → 提出問題 → 形成假說 → 設計實驗 → 分析數據與結論", "提出問題 → 觀察 → 得到結論 → 形成假說", "設計實驗 → 提出問題 → 觀察 → 形成假說", "形成假說 → 設計實驗 → 觀察 → 提出問題"],
+            correct: "觀察 → 提出問題 → 形成假說 → 設計實驗 → 分析數據與結論",
+            hint: "先有觀察與好奇提問，再提出可能的解釋（假說），最後以實驗驗證。",
+            misconceptions: {
+              "提出問題 → 觀察 → 得到結論 → 形成假說": "【探究流程盲點】必須先有【觀察】才會引發好奇而【提出問題】；且【假說】必須在實驗之前提出，以供實驗檢驗！"
+            },
+            explanation: "科學方法基本步驟：觀察現象 ➔ 發現並提出問題 ➔ 提出假說 ➔ 設計並進行實驗 ➔ 記錄分析數據 ➔ 獲得結論。"
+          },
+          {
+            formula: "小華想探討『光照時間長短對綠豆發芽率的影響』，他在甲組每天照光 12 小時，乙組放置在全黑暗箱中。在此實驗中，『光照時間長短』屬於何種變因？",
+            options: ["操縱變因（獨立變因）", "控制變因（保持不變）", "應變變因（實驗結果）", "無關變因"],
+            correct: "操縱變因（獨立變因）",
+            hint: "實驗中研究者刻意改變的唯一條件稱為…？",
+            misconceptions: {
+              "應變變因（實驗結果）": "【操縱變因 vs 應變變因】研究者『人為改變的唯一條件（光照時間）』是【操縱變因】；而『測量得到的結果（發芽率）』才是【應變變因】！"
+            },
+            explanation: "操縱變因為實驗組與對照組唯一不同的條件；應變變因為測量產生的結果（發芽率）；水分溫度等為控制變因。"
+          },
+          {
+            formula: "下列哪一種現象屬於生物特有的『生命現象』，而非單純的物理或化學變化？",
+            options: ["酵母菌分解葡萄糖產生酒精與二氧化碳並釋放能量（代謝）", "水晶寶寶吸水後體積膨脹變大", "鐘乳石沉積碳酸鈣隨時間增長長度", "鐵釘接觸潮濕空氣生鏽變紅"],
+            correct: "酵母菌分解葡萄糖產生酒精與二氧化碳並釋放能量（代謝）",
+            hint: "生命的四大現象為：代謝、生長與發育、感應、繁殖。",
+            misconceptions: {
+              "水晶寶寶吸水後體積膨脹變大": "【生命現象判斷盲點】水晶寶寶膨脹只是物理吸水，鐘乳石增長只是礦物沉澱，皆無細胞結構與【新陳代謝/繁殖】，不屬於生命現象！"
+            },
+            explanation: "生命現象包含：代謝（體內物質轉化與能量代謝）、生長、感應與繁殖；非生物的形體改變僅為物理化學現象。"
+          },
+          {
+            formula: "在科學方法中，一個好的『假說（Hypothesis）』必須具備下列哪一項最關鍵的特質？",
+            options: ["可以用實驗或觀察來加以驗證或推翻（具可證偽性）", "必須永遠是絕對正確且不可更改的真理", "不需要任何事實根據，全憑直覺猜測", "內容越複雜深奧越好"],
+            correct: "可以用實驗或觀察來加以驗證或推翻（具可證偽性）",
+            hint: "假說必須能夠設計實驗去檢驗它是否成立。",
+            misconceptions: {
+              "必須永遠是絕對正確且不可更改的真理": "【假說本質迷思】假說只是對問題的暫時性合理推測，若實驗結果不支持，隨時可以【修正或推翻】！"
+            },
+            explanation: "科學假說必須具備可驗證性（Testable）與可證偽性（Falsifiable），能藉由對照實驗檢驗其正確性。"
+          },
+          {
+            formula: "在生物實驗中，設置『對照組（Control group）』最主要的目的為何？",
+            options: ["作為基準線，以排除其他無關變因干擾並突顯操縱變因的效果", "用來加快實驗完成的速度", "增加實驗的難度與複雜度", "讓實驗數據看起來更多更豐富"],
+            correct: "作為基準線，以排除其他無關變因干擾並突顯操縱變因的效果",
+            hint: "若沒有對照組，我們就無法證明結果是由操縱變因所引起的。",
+            misconceptions: {
+              "用來加快實驗完成的速度": "【對照組意義考點】對照組是作為未經處理的【比較基準線】，用以證實實驗組的結果確實是由該單一變因所造成。"
+            },
+            explanation: "對照組提供無處理或標準狀態下的基準，與實驗組比對才能確定結果是由操縱變因引起，而非環境隨機干擾。"
+          }
+        ]
+      },
+      {
+        level: 2,
+        title: "Level 2: 細胞密室 (細胞學說與動植物細胞比較)",
+        monsterName: "細胞壁壁虎",
+        monsterEmoji: "🦎",
+        questions: [
+          {
+            formula: "17 世紀英國科學家虎克（Robert Hooke）使用自製顯微鏡觀察軟木塞薄片時，所看見並命名為『細胞（Cell）』的蜂窩狀結構，實際上是植物的何種構造？",
+            options: ["已經死亡的植物細胞壁", "完整的活植物細胞核", "植物細胞內的葉綠體", "正在分裂的染色體"],
+            correct: "已經死亡的植物細胞壁",
+            hint: "軟木塞是死木質組織，原生質已分解，只留下外圍堅硬的…？",
+            misconceptions: {
+              "完整的活植物細胞核": "【科學史常考考點】虎克當年觀察的軟木塞是【死細胞】，內部細胞質與細胞核早已分解，他所看到的蜂窩小室其實只是殘留的【細胞壁】！"
+            },
+            explanation: "虎克觀察軟木塞死細胞殘留的中空細胞壁並命名為 Cell；後由許旺、許萊登確立所有生物皆由活細胞構成的細胞學說。"
+          },
+          {
+            formula: "下列哪一組細胞構造，是『綠色植物細胞具有，而動物細胞通常沒有』的特有構造？",
+            options: ["細胞壁、葉綠體、大型液胞", "細胞核、粒線體、細胞膜", "細胞膜、細胞質、核糖體", "粒線體、細胞壁、高基氏體"],
+            correct: "細胞壁、葉綠體、大型液胞",
+            hint: "植物能行光合作用、有堅硬外框且具有儲水大泡泡。",
+            misconceptions: {
+              "粒線體、細胞壁、高基氏體": "【動植物共有 vs 特有】粒線體是動植物【共有】的能量工廠（植物也需要呼吸作用產生能量！）；植物【特有】的是細胞壁、葉綠體與大型液胞。"
+            },
+            explanation: "植物細胞特有：細胞壁（支持保護）、葉綠體（光合作用）、大型液胞（佔據成熟細胞大部分空間儲水）。"
+          },
+          {
+            formula: "被稱為細胞的『生命中樞』，內部含有控制生物遺傳與代謝指揮的 DNA 遺傳物質的構造為何？",
+            options: ["細胞核", "粒線體", "細胞膜", "液胞"],
+            correct: "細胞核",
+            hint: "若將此構造去除，細胞不久後便會停止代謝並死亡。",
+            misconceptions: {
+              "粒線體": "【構造功能定位】粒線體是『能量工廠（產生 ATP）』；【細胞核】才是掌管遺傳物質與生理調控的『生命中樞』！"
+            },
+            explanation: "細胞核內含染色質（由 DNA 與蛋白質組成），負責儲存遺傳訊息並調控細胞所有生命活動。"
+          },
+          {
+            formula: "在製作『人體口腔皮膜細胞』或『洋蔥表皮細胞』玻片標本時，常滴加『亞甲藍液』或『碘液』，其主要目的為何？",
+            options: ["使原本透明無色的細胞核染上顏色以利清晰觀察", "殺死細胞中的所有細菌以防感染", "固定細胞壁使其不會破裂", "提供細胞養分以維持其存活"],
+            correct: "使原本透明無色的細胞核染上顏色以利清晰觀察",
+            hint: "活細胞大部分是透明的，顯微鏡下很難看清內部結構。",
+            misconceptions: {
+              "固定細胞壁使其不會破裂": "【染色劑操作目的】口腔皮膜細胞根本沒有細胞壁！染色是為了讓原本透明的【細胞核顯色】以便於顯微鏡下辨識。"
+            },
+            explanation: "細胞核內染色質易與鹼性染劑（亞甲藍液）或碘液結合而顯色，大幅提高顯微鏡觀察之對比度。"
+          },
+          {
+            formula: "細胞內的『粒線體』主要進行何種關鍵生理作用，因此被譽為細胞的『發電廠』？",
+            options: ["進行呼吸作用，分解養分產生能量（ATP）", "進行光合作用，製造葡萄糖與氧氣", "合成蛋白質並排出細胞外", "吸收水分以維持細胞飽滿"],
+            correct: "進行呼吸作用，分解養分產生能量（ATP）",
+            hint: "植物與動物都必須藉由它來燃燒葡萄糖釋放能量！",
+            misconceptions: {
+              "進行光合作用，製造葡萄糖與氧氣": "【胞器功能混淆】製造葡萄糖是【葉綠體（光合作用）】；【粒線體】負責進行【呼吸作用】分解養分產生能量供細胞利用！"
+            },
+            explanation: "粒線體為真核細胞進行有氧呼吸的主要場所，將醣類等有機物氧化分解並釋出 ATP 能量。"
+          }
+        ]
+      },
+      {
+        level: 3,
+        title: "Level 3: 顯微鏡之鏡 (顯微鏡操作與成像原理)",
+        monsterName: "顛倒透鏡怪",
+        monsterEmoji: "🔍",
+        questions: [
+          {
+            formula: "用『複式顯微鏡』觀察寫有英文字母『p』的載玻片，在目鏡視野中看到的成像形狀應為下列何者？",
+            options: ["d", "p", "q", "b"],
+            correct: "d",
+            hint: "複式顯微鏡像是『上下顛倒、左右相反』（相當於旋轉 180 度）。",
+            misconceptions: {
+              "q": "【倒立成像旋轉法】將字母『p』旋轉 180 度（上下左右皆顛倒）會得到【d】！只左右相反才是 q。"
+            },
+            explanation: "複式顯微鏡經兩組凸透鏡折射，成像是上下顛倒、左右相反的倒立放大虛像，故 p ➔ d。"
+          },
+          {
+            formula: "小明在複式顯微鏡視野中，發現想觀察的草履蟲位於視野的『左上方』。若想將草履蟲移至視野『中央』，他應將載玻片往哪個方向移動？",
+            options: ["左上方（朝偏離的方向移動）", "右下方", "右上方", "左下方"],
+            correct: "左上方（朝偏離的方向移動）",
+            hint: "口訣：物像在哪裡，玻片就往哪裡移！",
+            misconceptions: {
+              "右下方": "【玻片移動方向陷阱】因為成像上下左右相反，若想讓物像向右下方移動到中央，玻片必須【往左上方（哪裡偏就往哪移）】移動！"
+            },
+            explanation: "複式顯微鏡視野移動方向與玻片移動方向相反，故物體在視野何處，玻片即往該方向移動。"
+          },
+          {
+            formula: "將顯微鏡由『低倍鏡（100倍）』切換為『高倍鏡（400倍）』觀察標本時，視野會產生下列何種變化？",
+            options: ["視野範圍變小、看見的細胞數變少、單一細胞變大、視野亮度變暗", "視野範圍變大、細胞數變多、視野變亮", "細胞大小不變，但顏色變深", "視野範圍變大，但解析度降低"],
+            correct: "視野範圍變小、看見的細胞數變少、單一細胞變大、視野亮度變暗",
+            hint: "高倍鏡就像鏡頭拉近（Zoom in），範圍變小且光線進來變少。",
+            misconceptions: {
+              "視野範圍變大、細胞數變多、視野變亮": "【高低倍鏡比較盲點】切換至高倍鏡時，視野範圍【縮小】、可見細胞數量【減少】、單一細胞被【放大】、進入光線變少使視野【變暗】！"
+            },
+            explanation: "高倍鏡放大倍率大，視野面積縮小使總光量減少（視野變暗），可容納之細胞數量減少但各細胞細節放大。"
+          },
+          {
+            formula: "在高倍顯微鏡下觀察細胞時，若影像有些微模糊，應使用哪一個調節輪來進行微調對焦？",
+            options: ["細調節輪（微調焦距）", "粗調節輪（大幅升降載物台）", "反光鏡旋鈕", "光圈調節環"],
+            correct: "細調節輪（微調焦距）",
+            hint: "高倍鏡物鏡極長，若轉動粗調節輪容易壓碎蓋玻片。",
+            misconceptions: {
+              "粗調節輪（大幅升降載物台）": "【高倍操作安全常識】高倍物鏡與玻片距離極近，切忌使用粗調節輪（容易撞碎玻片）！高倍時【只能使用細調節輪】對焦。"
+            },
+            explanation: "高倍鏡視野景深極淺，應使用細調節輪進行微米級焦距微調，確保成像銳利且保護鏡頭玻片。"
+          },
+          {
+            formula: "某顯微鏡配備目鏡（10X、15X）與物鏡（4X、10X、40X），試問使用此顯微鏡所能達到的『最大放大倍率』為何？",
+            options: ["600 倍（15 × 40）", "400 倍（10 × 40）", "150 倍（15 × 10）", "800 倍"],
+            correct: "600 倍（15 × 40）",
+            hint: "顯微鏡總放大倍率 = 目鏡倍率 × 物鏡倍率。",
+            misconceptions: {
+              "400 倍（10 × 40）": "【倍率相乘計算】最大倍率為最大的目鏡（15X）乘上最大的物鏡（40X），即 15 × 40 = 600 倍！"
+            },
+            explanation: "總放大倍率為目鏡與物鏡倍率之乘積，最大倍率為 15 × 40 = 600 倍。"
+          }
+        ]
+      },
+      {
+        level: 4,
+        title: "Level 4: 生命之樹 (生物體組成層次與分工)",
+        monsterName: "層次分化獸",
+        monsterEmoji: "🌳",
+        questions: [
+          {
+            formula: "下列關於『動物體』與『綠色植物體』在生物體組成層次上的比較，何者敘述完全正確？",
+            options: ["動物具有『器官系統』層次；而植物沒有器官系統層次（直接由器官構成個體）", "植物具有器官系統層次；而動物沒有", "植物沒有『組織』層次，直接由細胞構成器官", "動物與植物的組成層次完全相同，皆包含五個完整階層"],
+            correct: "動物具有『器官系統』層次；而植物沒有器官系統層次（直接由器官構成個體）",
+            hint: "動物有消化系統、循環系統；植物的一棵樹上只有根、莖、葉、花、果實等器官。",
+            misconceptions: {
+              "動物與植物的組成層次完全相同，皆包含五個完整階層": "【會考必考關鍵差異】植物【沒有「器官系統」】！植物層次：細胞 ➔ 組織 ➔ 器官 ➔ 個體；動物才有器官系統層次！"
+            },
+            explanation: "動物組成：細胞 ➔ 組織 ➔ 器官 ➔ 器官系統 ➔ 個體；植物無器官系統，由營養器官與生殖器官直接構成植物體。"
+          },
+          {
+            formula: "下列人體或植物的構造中，何者在生物學層次上屬於『器官（Organ）』？",
+            options: ["心臟、一顆蘋果、一片榕樹葉", "人體血液、洋蔥表皮", "紅血球、神經細胞", "消化系統、呼吸系統"],
+            correct: "心臟、一顆蘋果、一片榕樹葉",
+            hint: "由多種不同組織共同構成、具特定功能的構造稱為器官。",
+            misconceptions: {
+              "人體血液、洋蔥表皮": "【組織 vs 器官判斷】人體血液是『結締組織』、洋蔥表皮是『保護組織』；而【心臟、葉子、果實（蘋果）】是由多種組織構成的【器官】！"
+            },
+            explanation: "器官由多種組織結合以執行特定功能。植物的根/莖/葉/花/果實/種子皆為器官；心臟、胃、肝亦為器官。"
+          },
+          {
+            formula: "下列關於『單細胞生物（如草履蟲、變形蟲）』與『多細胞生物（如人類、榕樹）』的比較，何者正確？",
+            options: ["單細胞生物單一個細胞即可獨立完成代謝、感應、生長、繁殖等所有生命現象；多細胞生物細胞則有高度分工", "單細胞生物體積小，因此不需要進行呼吸作用與代謝", "多細胞生物體內的每個細胞都能獨立脫離個體單獨存活", "單細胞生物體內具有複雜的器官系統"],
+            correct: "單細胞生物單一個細胞即可獨立完成代謝、感應、生長、繁殖等所有生命現象；多細胞生物細胞則有高度分工",
+            hint: "一個細胞就是一個完整的生命個體。",
+            misconceptions: {
+              "多細胞生物體內的每個細胞都能獨立脫離個體單獨存活": "【細胞分工特化意義】多細胞生物細胞高度分工且專一化，單一細胞脫離個體通常無法獨活；而單細胞生物一細胞即全能個體。"
+            },
+            explanation: "單細胞生物由單一細胞包辦所有生命機能；多細胞生物細胞特化形成組織、器官分工合作，生存效率與適應力更高。"
+          },
+          {
+            formula: "在植物體的六大器官中，下列哪一組器官專門負責『繁殖後代』，故稱為『生殖器官』？",
+            options: ["花、果實、種子", "根、莖、葉", "根、莖、果實", "葉、花、種子"],
+            correct: "花、果實、種子",
+            hint: "根、莖、葉負責吸收運送養分（營養器官）；花、果實、種子負責傳粉繁殖。",
+            misconceptions: {
+              "根、莖、葉": "【營養器官 vs 生殖器官】根、莖、葉負責製造與吸收運送養分，稱為【營養器官】；【花、果實、種子】負責產生種子繁殖後代，稱為【生殖器官】。"
+            },
+            explanation: "植物六大器官分為：營養器官（根、莖、葉，維持個體生存）與生殖器官（花、果實、種子，繁衍後代）。"
+          },
+          {
+            formula: "【會考整合題】小明拔下一片地錦的葉片，用顯微鏡觀察發現：最外層是緊密排列的表皮細胞，中間含有行光合作用的葉肉細胞，內部還有負責輸送水分養分的葉脈維管束。這說明了『葉片』在生物層次上屬於哪一層級？",
+            options: ["由多種不同組織（表皮組織、薄壁組織、輸導組織）構成的『器官』", "單一的『細胞』", "單一的『組織』", "由多個器官組成的『器官系統』"],
+            correct: "由多種不同組織（表皮組織、薄壁組織、輸導組織）構成的『器官』",
+            hint: "包含表皮、葉肉、葉脈等多種組織組合在一起，具有行光合作用與蒸散的功能。",
+            misconceptions: {
+              "單一的『組織』": "【組織與器官層級整合】葉片中同時含有保護組織（表皮）、製造組織（葉肉）、輸導組織（葉脈），多種組織集合成一個功能單位，故葉片是【器官】！"
+            },
+            explanation: "器官之定義為多種組織共同協同運作之結構；一片葉子包含表皮、葉肉與維管束，故在組成層次上屬於器官。"
+          }
+        ]
+      }
+    ];
+
+    class GameManager {
+      constructor() {
+        this.currentLevelIndex = 0;
+        this.currentQuestionIndex = 0;
+        this.playerHp = GAME_BALANCE.playerMaxHp;
+        this.monsterHp = 100;
+        this.score = 0;
+        this.combo = 0;
+        this.isAnswering = false;
+
+        this.elPlayerHp = document.getElementById('player-hp-bar');
+        this.elPlayerHpText = document.getElementById('player-hp-text');
+        this.elScore = document.getElementById('score-val');
+        this.elCombo = document.getElementById('combo-pill');
+        this.elComboCount = document.getElementById('combo-count');
+        this.elStageTitle = document.getElementById('stage-title');
+        this.elMonsterName = document.getElementById('monster-name');
+        this.elMonsterEmoji = document.getElementById('monster-emoji');
+        this.elMonsterHp = document.getElementById('monster-hp-bar');
+        this.elFormula = document.getElementById('formula-text');
+        this.elHint = document.getElementById('formula-hint');
+        this.elOptionsGrid = document.getElementById('options-grid');
+        this.elQuestBadge = document.getElementById('quest-badge');
+        this.elPillsContainer = document.getElementById('stage-pills');
+
+        this.modalExplanation = document.getElementById('modal-explanation');
+        this.elModalTitle = document.getElementById('modal-title');
+        this.elModalContent = document.getElementById('modal-content');
+        this.btnModalContinue = document.getElementById('btn-modal-continue');
+
+        this.screenTitle = document.getElementById('screen-title');
+        this.screenVictory = document.getElementById('screen-victory');
+        this.screenGameOver = document.getElementById('screen-gameover');
+
+        this.natureCanvas = document.getElementById('nature-canvas');
+        this.visualizer = new NatureVisualizer(this.natureCanvas);
+
+        this.bindEvents();
+      }
+
+      bindEvents() {
+        document.getElementById('btn-start-game').addEventListener('click', () => {
+          audio.init();
+          this.startGame();
+        });
+
+        document.getElementById('btn-restart-victory').addEventListener('click', () => this.restartGame());
+        document.getElementById('btn-restart-gameover').addEventListener('click', () => this.restartGame());
+
+        this.btnModalContinue.addEventListener('click', () => {
+          this.closeExplanation();
+          this.nextQuestion();
+        });
+
+        window.addEventListener('keydown', (e) => {
+          if (this.isAnswering) return;
+          if (['1', '2', '3', '4'].includes(e.key)) {
+            const idx = parseInt(e.key, 10) - 1;
+            const btns = this.elOptionsGrid.querySelectorAll('.nature-btn');
+            if (btns[idx]) btns[idx].click();
+          }
+        });
+
+        const btnSound = document.getElementById('btn-sound-toggle');
+        if (btnSound) {
+          btnSound.addEventListener('click', () => {
+            audio.muted = !audio.muted;
+            btnSound.textContent = audio.muted ? '🔇 音效: 關' : '🔊 音效: 開';
+          });
+        }
+
+        window.addEventListener('resize', () => this.updateVisual());
+      }
+
+      startGame() {
+        this.screenTitle.style.display = 'none';
+        this.screenVictory.style.display = 'none';
+        this.screenGameOver.style.display = 'none';
+        this.currentLevelIndex = 0;
+        this.currentQuestionIndex = 0;
+        this.playerHp = GAME_BALANCE.playerMaxHp;
+        this.score = 0;
+        this.combo = 0;
+
+        this.loadLevel(0);
+      }
+
+      restartGame() { this.startGame(); }
+
+      loadLevel(levelIndex) {
+        this.currentLevelIndex = levelIndex;
+        this.currentQuestionIndex = 0;
+        this.monsterHp = 100;
+        const stage = CHAPTER1_STAGES[levelIndex];
+
+        this.elStageTitle.textContent = stage.title;
+        this.elMonsterName.textContent = stage.monsterName;
+        this.elMonsterEmoji.textContent = stage.monsterEmoji;
+
+        this.updateHUD();
+        this.renderStagePills();
+        this.loadQuestion();
+        audio.playLevelUp();
+      }
+
+      renderStagePills() {
+        this.elPillsContainer.innerHTML = '';
+        const stage = CHAPTER1_STAGES[this.currentLevelIndex];
+        for (let i = 0; i < stage.questions.length; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'progress-dot' + (i === this.currentQuestionIndex ? ' active' : '') + (i < this.currentQuestionIndex ? ' cleared' : '');
+          this.elPillsContainer.appendChild(dot);
+        }
+      }
+
+      loadQuestion() {
+        this.isAnswering = false;
+        const stage = CHAPTER1_STAGES[this.currentLevelIndex];
+        const q = stage.questions[this.currentQuestionIndex];
+
+        this.elQuestBadge.textContent = `第 ${this.currentLevelIndex + 1} 關 - 題 ${this.currentQuestionIndex + 1}/${stage.questions.length}`;
+        this.elFormula.textContent = q.formula;
+        this.elHint.textContent = `💡 會考核心提示：${q.hint}`;
+
+        this.elOptionsGrid.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'nature-btn';
+          btn.innerHTML = `<span class="btn-key">${idx + 1}</span> <span>${opt}</span>`;
+          btn.setAttribute('aria-label', `選項 ${idx + 1}: ${opt}`);
+          btn.addEventListener('click', () => this.handleAnswer(opt, btn, q));
+          this.elOptionsGrid.appendChild(btn);
+        });
+
+        this.renderStagePills();
+        this.updateVisual();
+      }
+
+      updateVisual() {
+        this.visualizer.render(this.currentLevelIndex + 1);
+      }
+
+      handleAnswer(selectedOption, btnElement, question) {
+        if (this.isAnswering) return;
+        this.isAnswering = true;
+
+        const isCorrect = selectedOption === question.correct;
+
+        if (isCorrect) {
+          btnElement.classList.add('btn-correct');
+          audio.playCorrect();
+          audio.playAttack();
+          this.combo++;
+          const gainedScore = Math.round(GAME_BALANCE.scorePerQuestion * (1 + (this.combo - 1) * 0.2));
+          this.score += gainedScore;
+
+          this.monsterHp = Math.max(0, this.monsterHp - GAME_BALANCE.damageToMonster);
+          this.triggerAttackAnim();
+          this.spawnFloatingText(`+${gainedScore} 答對!`, this.elMonsterEmoji.parentElement, 'fx-crit');
+
+          setTimeout(() => this.nextQuestion(), 850);
+        } else {
+          btnElement.classList.add('btn-wrong');
+          audio.playWrong();
+          this.combo = 0;
+          this.playerHp = Math.max(0, this.playerHp - GAME_BALANCE.damageToPlayer);
+          this.triggerHurtAnim();
+          this.spawnFloatingText(`-${GAME_BALANCE.damageToPlayer} HP`, document.querySelector('.hero-avatar-box'), 'fx-damage');
+
+          const btns = this.elOptionsGrid.querySelectorAll('.nature-btn');
+          btns.forEach(b => {
+            if (b.innerText.includes(question.correct)) b.classList.add('btn-correct');
+          });
+
+          setTimeout(() => {
+            if (this.playerHp <= 0) this.gameOver();
+            else this.showExplanation(selectedOption, question);
+          }, 750);
+        }
+        this.updateHUD();
+      }
+
+      triggerAttackAnim() {
+        const hero = document.querySelector('.hero-avatar-box');
+        const monster = document.querySelector('.monster-avatar-box');
+        if (hero) hero.classList.add('anim-attack');
+        if (monster) monster.classList.add('anim-hurt');
+        setTimeout(() => {
+          if (hero) hero.classList.remove('anim-attack');
+          if (monster) monster.classList.remove('anim-hurt');
+        }, 350);
+      }
+
+      triggerHurtAnim() {
+        const hero = document.querySelector('.hero-avatar-box');
+        if (hero) hero.classList.add('anim-hurt');
+        setTimeout(() => {
+          if (hero) hero.classList.remove('anim-hurt');
+        }, 350);
+      }
+
+      spawnFloatingText(text, container, cssClass) {
+        const fx = document.createElement('div');
+        fx.className = `floating-fx ${cssClass}`;
+        fx.textContent = text;
+        fx.style.left = '20px'; fx.style.top = '10px';
+        container.parentElement.appendChild(fx);
+        setTimeout(() => fx.remove(), 800);
+      }
+
+      showExplanation(selectedOption, question) {
+        this.elModalTitle.textContent = "🍃 自然學者筆記：觀念解析與迷思診斷";
+        const misconceptionText = question.misconceptions && question.misconceptions[selectedOption]
+          ? question.misconceptions[selectedOption]
+          : "注意題幹所問的科學方法步驟、動植物特有構造或生物層級定義，細心再思考一次！";
+
+        this.elModalContent.innerHTML = `
+          <div class="misconception-box">
+            <div style="font-weight:800; margin-bottom:4px;">⚠️ 會考易錯盲點陷阱：</div>
+            <div>${misconceptionText}</div>
+          </div>
+          <div class="step-by-step">
+            <strong>📝 會考標準觀念詳解：</strong><br/>
+            題目：<code>${question.formula}</code><br/>
+            正確答案：<strong style="color:#10b981; font-size:15px;">${question.correct}</strong><br/>
+            ${question.explanation}
+          </div>
+        `;
+        this.modalExplanation.style.display = 'flex';
+      }
+
+      closeExplanation() { this.modalExplanation.style.display = 'none'; }
+
+      nextQuestion() {
+        const stage = CHAPTER1_STAGES[this.currentLevelIndex];
+        this.currentQuestionIndex++;
+        if (this.currentQuestionIndex >= stage.questions.length) {
+          if (this.currentLevelIndex + 1 < CHAPTER1_STAGES.length) {
+            this.loadLevel(this.currentLevelIndex + 1);
+          } else {
+            this.victory();
+          }
+        } else {
+          this.loadQuestion();
+        }
+      }
+
+      updateHUD() {
+        const hpPct = Math.max(0, (this.playerHp / GAME_BALANCE.playerMaxHp) * 100);
+        this.elPlayerHp.style.width = `${hpPct}%`;
+        this.elPlayerHpText.textContent = `${this.playerHp}/${GAME_BALANCE.playerMaxHp}`;
+
+        const monsterPct = Math.max(0, this.monsterHp);
+        this.elMonsterHp.style.width = `${monsterPct}%`;
+        this.elScore.textContent = this.score.toString().padStart(5, '0');
+
+        if (this.combo >= 2) {
+          this.elCombo.style.display = 'block';
+          this.elComboCount.textContent = this.combo;
+        } else {
+          this.elCombo.style.display = 'none';
+        }
+      }
+
+      victory() {
+        audio.playVictory();
+        document.getElementById('final-victory-score').textContent = this.score;
+        this.screenVictory.style.display = 'flex';
+      }
+
+      gameOver() {
+        audio.playWrong();
+        document.getElementById('final-gameover-score').textContent = this.score;
+        this.screenGameOver.style.display = 'flex';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.game = new GameManager();
+    });
+  </script>
+</body>
+</html>
