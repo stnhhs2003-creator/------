@@ -1,14 +1,14 @@
 ﻿@echo off
 chcp 65001 >nul
-title 國中會考五科 - 雲端網頁部署捷徑
+title 國中會考七科 - 雲端網頁部署捷徑
 
 echo ============================================================
 echo   🚀 國中會考七大學科特訓系統 · GitFolder Express 部署助手
 echo ============================================================
 echo.
 echo [1/2] 正在複製「會考複習五科」資料夾路徑到剪貼簿...
-powershell -Command "Set-Clipboard -Value 'G:\我的雲端硬碟\2026ai\會考七科特訓最新版'"
-echo  -> 已成功複製路徑：G:\我的雲端硬碟\2026ai\會考七科特訓最新版
+powershell -Command "Set-Clipboard -Value 'G:\我的雲端硬碟\2026ai\會考複習五科'"
+echo  -> 已成功複製路徑：G:\我的雲端硬碟\2026ai\會考複習五科
 echo.
 echo [2/2] 正在開啟 GitFolder Express 雲端網頁部署神器...
 start https://script.google.com/macros/s/AKfycbx1SqVI5HnbhimM5kkir4-bTOsKjErlSSbgDx-TR-0qHBTFRkmOXMsYSUGW43SdVA4Aiw/exec?code=a535d4d99d7754703e60
