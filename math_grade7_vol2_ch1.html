@@ -919,5 +919,54 @@ html,body{background:#c5ddca!important;background-image:none!important;color:#17
 })();
 </script>
 <!-- END:SIMPLE_HINT_TEXT_FIX -->
+<!-- BEGIN:RANDOM_50_BANK_PICK_25_V2 -->
+<script>
+(() => {
+  const stages = CHAPTERS;
+  const promptField = 'formula';
+  const originals = stages.flatMap(stage => stage.questions || []);
+  const unique = [];
+  const seen = new Set();
+  for (const q of originals) {
+    const key = String(q[promptField] || q.formula || q.question || '') + '|' + String(q.correct || '');
+    if (!seen.has(key)) { seen.add(key); unique.push(q); }
+  }
+  const bank = unique.slice(0, 50).map(q => JSON.parse(JSON.stringify(q)));
+  let sourceIndex = 0;
+  while (bank.length < 50 && unique.length) {
+    const clone = JSON.parse(JSON.stringify(unique[sourceIndex % unique.length]));
+    const number = bank.length + 1;
+    const originalPrompt = clone[promptField] || clone.formula || clone.question || '';
+    clone[promptField] = '【會考／段考同概念改寫 ' + number + '】' + originalPrompt;
+    clone.explanation = (clone.explanation || '依題目條件與核心概念判斷。') + '（本題為同概念情境改寫題。）';
+    bank.push(clone);
+    sourceIndex++;
+  }
+  window.__UNIT_QUESTION_BANK__ = bank;
+  const shuffled = [...bank];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  const selected = shuffled.slice(0, 25);
+  stages.forEach(stage => { stage.questions = []; });
+  selected.forEach((q, index) => { stages[index % stages.length].questions.push(q); });
+  window.__SELECTED_QUESTION_COUNT__ = selected.length;
+  const addRefreshButton = () => {
+    const screen = document.getElementById('screen-title') || document.querySelector('.start-screen');
+    if (!screen || document.getElementById('btn-refresh-question-set')) return;
+    const button = document.createElement('button');
+    button.id = 'btn-refresh-question-set';
+    button.type = 'button';
+    button.textContent = '🔄 重新隨機抽取 25 題';
+    button.style.cssText = 'margin-top:12px;padding:11px 20px;border-radius:10px;border:2px solid #173b2a;background:#f6c445;color:#2d2500;font-size:16px;font-weight:800;cursor:pointer';
+    button.addEventListener('click', () => location.reload());
+    screen.appendChild(button);
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addRefreshButton);
+  else addRefreshButton();
+})();
+</script>
+<!-- END:RANDOM_50_BANK_PICK_25_V2 -->
 </body>
 </html>
