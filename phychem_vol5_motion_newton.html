@@ -111,6 +111,14 @@
     @keyframes floatTheme { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
     @media (max-width: 768px) { #app-container { max-height: 100vh; border: none; border-radius: 0; } .options-grid { grid-template-columns: 1fr; } }
   </style>
+<!-- BEGIN:SIMPLE_HINT_LAYOUT_FIX -->
+<style>
+html, body { min-height:100% !important; height:auto !important; overflow-x:hidden !important; overflow-y:auto !important; }
+#app-container, .app-container, #game-container, .game-container { min-height:100vh !important; height:auto !important; max-height:none !important; overflow:visible !important; }
+#main-stage, .main-stage, #question-panel, .question-panel, .question-box { min-height:0 !important; height:auto !important; max-height:none !important; overflow:visible !important; }
+.question-hint-text, .formula-hint, .question-hint, #formula-hint, #question-hint { position:static !important; inset:auto !important; transform:none !important; display:block !important; clear:both !important; width:100% !important; max-width:100% !important; min-height:1.45em !important; height:auto !important; max-height:none !important; overflow:visible !important; margin:8px 0 0 !important; padding:0 !important; line-height:1.45 !important; z-index:auto !important; }
+</style>
+<!-- END:SIMPLE_HINT_LAYOUT_FIX -->
 </head>
 <body>
   <div id="app-container">
@@ -587,7 +595,7 @@
         this.elHint.textContent = `💡 會考核心提示：${q.hint}`;
 
         this.elOptionsGrid.innerHTML = '';
-        q.options.forEach((opt, idx) => {
+        [...q.options].sort(() => Math.random() - 0.5).forEach((opt, idx) => {
           const btn = document.createElement('button');
           btn.className = 'theme-btn';
           btn.innerHTML = `<span class="btn-key">${idx + 1}</span> <span>${opt}</span>`;
@@ -734,5 +742,25 @@
       window.game = new GameManager();
     });
   </script>
+<!-- BEGIN:SIMPLE_HINT_TEXT_FIX -->
+<script>
+(() => {
+  const selector = '.question-hint-text, .formula-hint, .question-hint, #formula-hint, #question-hint';
+  let editing = false;
+  function shorten(el) {
+    if (editing || !el) return;
+    const raw = (el.textContent || '').replace(/^\s*💡\s*(?:會考核心)?提示\s*[：:]\s*/, '').trim();
+    if (!raw) return;
+    const first = raw.match(/^.{1,52}?[。！？!?](?:\s|$)/u)?.[0]?.trim();
+    const brief = first || (raw.length > 52 ? raw.slice(0, 52).trim() + '…' : raw);
+    const next = '💡 提示：' + brief;
+    if (el.textContent !== next) { editing = true; el.textContent = next; editing = false; }
+  }
+  function apply() { document.querySelectorAll(selector).forEach(shorten); }
+  new MutationObserver(apply).observe(document.documentElement, {subtree:true, childList:true, characterData:true});
+  document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', apply) : apply();
+})();
+</script>
+<!-- END:SIMPLE_HINT_TEXT_FIX -->
 </body>
 </html>
